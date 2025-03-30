@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Git Monkey v4 - Main CLI Router
+
+COMMAND=$1
+shift
+
+case "$COMMAND" in
+  alias)
+    ./commands/alias.sh "$@"
+    ;;
+  clone)
+    ./commands/clone.sh "$@"
+    ;;
+  branch)
+    ./commands/branch.sh "$@"
+    ;;
+  stash)
+    ./commands/stash.sh "$@"
+    ;;
+  undo)
+    ./commands/undo.sh "$@"
+    ;;
+  tips)
+    ./commands/tips.sh "$@"
+    ;;
+  tutorial|school|learn)
+    ./commands/tutorial.sh "$@"
+    ;;
+  wizard)
+    ./commands/wizard.sh "$@"
+    ;;
+  settings)
+    ./commands/settings.sh "$@"
+    ;;
+  version)
+    echo "Git Monkey v4.0"
+    ;;
+  help)
+    echo "🐒 Git Monkey CLI - The chillest way to learn Git"
+    echo ""
+    echo "Available commands:"
+    echo "  gitmonkey alias      - Install helpful Git aliases"
+    echo "  gitmonkey clone      - Clone a repository with guidance"
+    echo "  gitmonkey branch     - Create or manage branches"
+    echo "  gitmonkey stash      - Stash your changes for later"
+    echo "  gitmonkey undo       - Undo mistakes safely"
+    echo "  gitmonkey tutorial   - Interactive Git tutorials (also: school, learn)"
+    echo "  gitmonkey tips       - Show helpful Git tips"
+    echo "  gitmonkey wizard     - Access advanced Git features"
+    echo "  gitmonkey settings   - Customize your Git Monkey experience"
+    echo "  gitmonkey version    - Show current version"
+    echo "  gitmonkey help       - Show this help message"
+    echo ""
+    echo "Running without a command opens the interactive menu."
+    ;;
+  *)
+    ./commands/menu.sh
+    ;;
+esac
+
