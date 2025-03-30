@@ -13,6 +13,8 @@ A local-friendly CLI script that helps you:
 - Clone repos with style and confidence
 - Create and switch branches with helpful guidance
 - Undo mistakes safely (without the panic)
+- Start new projects with your preferred tech stack
+- Learn Git interactively with "Git School"
 - Explore advanced features with Wizard Mode
 
 ---
@@ -39,6 +41,7 @@ Git Monkey provides two types of commands: the CLI tool itself and Git aliases i
 |---------|--------------|
 | `gitmonkey` | Launches the interactive menu |
 | `gitmonkey tutorial` | Interactive Git School lessons (learn by doing) |
+| `gitmonkey start [name]` | Create a new project with your preferred stack |
 | `gitmonkey stash` | Manage your stashed changes |
 | `gitmonkey tips` | View Git tips and tricks |
 | `gitmonkey settings` | Customize your Git Monkey experience |
@@ -68,6 +71,31 @@ Git Monkey is powered by the Soft Stack:
 - **Hacker joy, human ease** - Power without the pain
 
 We believe learning should feel fun, not fragile.
+
+## 🚀 Project Starter
+
+Git Monkey includes a powerful project starter that helps you scaffold new projects with your preferred tech stack:
+
+```bash
+gitmonkey start my-awesome-project
+```
+
+The starter wizard guides you through:
+
+- **Frameworks**: SvelteKit, Node.js, or static sites
+- **UI Libraries**: Tailwind CSS with DaisyUI
+- **Backend Services**: Supabase integration
+- **Developer Tools**: ESLint, Prettier, GitHub repo setup
+
+You can save your favorite configurations as presets:
+
+```bash
+# Use a saved preset
+gitmonkey start new-project --preset favorite
+
+# Skip prompts and use defaults
+gitmonkey start quick-project --minimal
+```
 
 ## 🧙‍♂️ Themes & Easter Eggs
 
