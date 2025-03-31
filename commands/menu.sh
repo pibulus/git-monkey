@@ -5,6 +5,7 @@ source ./utils/style.sh
 source ./utils/config.sh
 source ./utils/profile.sh
 source ./utils/titles.sh
+source ./utils/identity.sh
 
 # 🔥 Cracktro Intro
 clear
@@ -18,14 +19,14 @@ else
   echo
 fi
 
-# Get user title for personalized welcome
-user_title=$(get_persistent_title)
+# Get identity for personalized welcome
+full_identity=$(get_full_identity)
 
 # Check if animations are enabled
 if [ "$ENABLE_ANIMATIONS" = "true" ]; then
-  typewriter "🔥 Welcome to Git Monkey CLI, $user_title – terminal-side clarity, chaos, and command 🔥" 0.015
+  typewriter "🔥 Welcome to Git Monkey CLI, $full_identity – terminal-side clarity, chaos, and command 🔥" 0.015
 else
-  echo "🔥 Welcome to Git Monkey CLI, $user_title – terminal-side clarity, chaos, and command 🔥"
+  echo "🔥 Welcome to Git Monkey CLI, $full_identity – terminal-side clarity, chaos, and command 🔥"
 fi
 
 # Check if colors are enabled
@@ -57,6 +58,7 @@ options=(
   "Show Git tips" 
   "View Git context (whoami)"
   "Manage your title"
+  "Setup your identity"
   "Enter Wizard Mode" 
   "Settings" 
   "Exit"
@@ -74,9 +76,10 @@ select opt in "${options[@]}"; do
         8) ./commands/tips.sh; break ;;
         9) ./commands/whoami.sh; break ;;
         10) ./commands/title.sh; break ;;
-        11) ./commands/wizard.sh; break ;;
-        12) ./commands/settings.sh; break ;;
-        13) echo "👋 Bye! Come back anytime."; exit 0 ;;
+        11) ./commands/identity.sh setup; break ;;
+        12) ./commands/wizard.sh; break ;;
+        13) ./commands/settings.sh; break ;;
+        14) echo "👋 Bye! Come back anytime."; exit 0 ;;
         *) echo "😵‍💫 Pick a number, not a banana." ;;
     esac
 done

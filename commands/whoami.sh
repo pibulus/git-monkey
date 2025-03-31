@@ -7,6 +7,7 @@ source ./utils/style.sh
 source ./utils/config.sh
 source ./utils/profile.sh
 source ./utils/titles.sh
+source ./utils/identity.sh
 
 # State file locations
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"
@@ -109,11 +110,26 @@ main() {
   box "🐵 Git Monkey Context"
   echo ""
   
-  # Show user info and title
+  # Show user info and identity
   local user_title=$(get_persistent_title)
   local tone_stage=$(get_tone_stage)
+  local identity_mode=$(get_identity_mode)
+  local full_identity=$(get_full_identity)
+  local user_name=$(get_user_real_name)
+  local title_locked="No"
+  
+  if is_title_locked; then
+    title_locked="Yes"
+  fi
+  
   echo "👤 User: $MONKEY_USER"
   echo "🏆 Title: $user_title (Tone Stage $tone_stage/5)"
+  
+  # Only show identity details if different from default system user
+  if [ -n "$user_name" ] && [ "$user_name" != "null" ]; then
+    echo "🎭 Identity: $full_identity"
+    echo "🔒 Title Locked: $title_locked"
+  fi
   echo ""
   
   # Show repository info

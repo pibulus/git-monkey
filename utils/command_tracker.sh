@@ -7,6 +7,7 @@
 source "$(dirname "${BASH_SOURCE[0]}")/config.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/titles.sh"
+source "$(dirname "${BASH_SOURCE[0]}")/identity.sh"
 
 # Function to execute a command and track its usage
 execute_command() {
@@ -39,9 +40,9 @@ execute_command() {
   return $exit_code
 }
 
-# Function to show a greeting based on tone stage
+# Function to show a greeting based on identity
 show_greeting() {
-  local greeting=$(generate_title_greeting)
+  local greeting=$(generate_identity_greeting)
   echo "$greeting"
 }
 

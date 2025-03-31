@@ -7,6 +7,7 @@ source ./utils/style.sh
 source ./utils/config.sh
 source ./utils/profile.sh
 source ./utils/titles.sh
+source ./utils/identity.sh
 
 # Function to show usage
 show_usage() {
@@ -27,15 +28,26 @@ show_current_title() {
   local title=$(get_persistent_title)
   local stage=$(get_tone_stage)
   local theme=$(get_selected_theme)
+  local full_identity=$(get_full_identity)
+  local identity_mode=$(get_identity_mode)
+  local title_locked="No"
+  
+  if is_title_locked; then
+    title_locked="Yes"
+  fi
   
   echo ""
-  box "🐒 Your Git Monkey Identity"
+  box "🐒 Your Git Monkey Title"
   echo ""
   
-  echo "👤 User: $MONKEY_USER"
-  echo "🏆 Title: $title"
+  echo "🏆 Current Title: $title"
   echo "🌟 Tone Stage: $stage/5"
   echo "🎨 Theme: $theme"
+  echo "🔒 Title Locked: $title_locked"
+  echo ""
+  
+  echo "🎭 Your identity appears as: $full_identity"
+  echo "   (Identity Mode: $identity_mode)"
   
   echo ""
   echo "Stats:"
@@ -134,11 +146,22 @@ set_title() {
 set_random_title() {
   local stage=$(get_tone_stage)
   local theme=$(get_selected_theme)
+  
+  # Don't update if title is locked
+  if is_title_locked; then
+    echo "📝 Your title is currently locked. Unlock it first with: gitmonkey identity lock off"
+    return 1
+  fi
+  
   local new_title=$(get_monkey_title "$stage" "$theme")
   
   set_custom_title "$new_title"
   echo ""
   echo "✅ Your new random title is: $new_title"
+  
+  # Show how this affects identity
+  local full_identity=$(get_full_identity)
+  echo "🎭 Your identity now appears as: $full_identity"
   echo ""
 }
 

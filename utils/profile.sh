@@ -33,6 +33,13 @@ initialize_profile() {
   "custom": {
     "title": null,
     "last_title_change": null
+  },
+  "identity": {
+    "name": null,
+    "display_name": null,
+    "custom_name": false,
+    "identity_mode": 3,
+    "title_locked": false
   }
 }
 EOF
