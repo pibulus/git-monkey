@@ -18,14 +18,37 @@ case "$COMMAND" in
   stash)
     ./commands/stash.sh "$@"
     ;;
+  push)
+    ./commands/push.sh "$@"
+    ;;
   undo)
     ./commands/undo.sh "$@"
     ;;
   tips)
     ./commands/tips.sh "$@"
     ;;
-  tutorial|school|learn)
+  learn)
+    ./commands/learn.sh "$@"
+    ;;
+  tutorial|school)
     ./commands/tutorial.sh "$@"
+    ;;
+  worktree|worktree:*)
+    ./commands/worktree.sh "$@"
+    ;;
+  generate)
+    ./commands/generate.sh "$@"
+    ;;
+  pivot)
+    # For pivot, we need to evaluate the output to change directory
+    eval "$(./commands/pivot.sh "$@")"
+    ;;
+  return)
+    # For return, we need to evaluate the output to change directory
+    eval "$(./commands/return.sh "$@")"
+    ;;
+  whoami)
+    ./commands/whoami.sh "$@"
     ;;
   wizard)
     ./commands/wizard.sh "$@"
@@ -34,18 +57,25 @@ case "$COMMAND" in
     ./commands/settings.sh "$@"
     ;;
   version)
-    echo "Git Monkey v4.0"
+    echo "Git Monkey v4.1"
     ;;
   help)
-    echo "🐒 Git Monkey CLI - The chillest way to learn Git"
+    echo "🐒 Git Monkey CLI - The chillest way to Git"
     echo ""
     echo "Available commands:"
     echo "  gitmonkey alias      - Install helpful Git aliases"
     echo "  gitmonkey clone      - Clone a repository with guidance"
     echo "  gitmonkey branch     - Create or manage branches"
     echo "  gitmonkey stash      - Stash your changes for later"
+    echo "  gitmonkey push       - Push with automatic upstream tracking"
     echo "  gitmonkey undo       - Undo mistakes safely"
-    echo "  gitmonkey tutorial   - Interactive Git tutorials (also: school, learn)"
+    echo "  gitmonkey worktree   - Work on multiple branches at once (try this!)"
+    echo "  gitmonkey pivot      - Quick context switching with auto-stashing"
+    echo "  gitmonkey return     - Return to previous context"
+    echo "  gitmonkey whoami     - Show your current Git context"
+    echo "  gitmonkey generate   - Generate code and components"
+    echo "  gitmonkey learn      - Learn Git concepts and Git Monkey features"
+    echo "  gitmonkey tutorial   - Interactive Git tutorials"
     echo "  gitmonkey tips       - Show helpful Git tips"
     echo "  gitmonkey wizard     - Access advanced Git features"
     echo "  gitmonkey settings   - Customize your Git Monkey experience"
@@ -53,6 +83,8 @@ case "$COMMAND" in
     echo "  gitmonkey help       - Show this help message"
     echo ""
     echo "Running without a command opens the interactive menu."
+    echo ""
+    echo "💡 Try: gitmonkey worktree:add <branch> to start using worktrees!"
     ;;
   *)
     ./commands/menu.sh

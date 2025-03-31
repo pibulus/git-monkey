@@ -46,6 +46,7 @@ options=(
   "Clone a repo" 
   "Make a new branch" 
   "Stash manager" 
+  "Smart push (with upstream)" 
   "Undo something" 
   "Git School (interactive tutorials)" 
   "Show Git tips" 
@@ -60,12 +61,13 @@ select opt in "${options[@]}"; do
         2) ./commands/clone.sh; break ;;
         3) ./commands/branch.sh; break ;;
         4) ./commands/stash.sh; break ;;
-        5) ./commands/undo.sh; break ;;
-        6) ./commands/tutorial.sh; break ;;
-        7) ./commands/tips.sh; break ;;
-        8) ./commands/wizard.sh; break ;;
-        9) ./commands/settings.sh; break ;;
-        10) echo "👋 Bye! Come back anytime."; exit 0 ;;
+        5) ./commands/push.sh; break ;;
+        6) ./commands/undo.sh; break ;;
+        7) ./commands/tutorial.sh; break ;;
+        8) ./commands/tips.sh; break ;;
+        9) ./commands/wizard.sh; break ;;
+        10) ./commands/settings.sh; break ;;
+        11) echo "👋 Bye! Come back anytime."; exit 0 ;;
         *) echo "😵‍💫 Pick a number, not a banana." ;;
     esac
 done

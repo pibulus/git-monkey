@@ -12,6 +12,9 @@ A local-friendly CLI script that helps you:
 - Set up your git aliases with zero friction
 - Clone repos with style and confidence
 - Create and switch branches with helpful guidance
+- Manage multiple branches with worktrees
+- Switch contexts rapidly with pivot/return
+- Push with automatic upstream tracking
 - Undo mistakes safely (without the panic)
 - Start new projects with your preferred tech stack
 - Learn Git interactively with "Git School"
@@ -43,6 +46,14 @@ Git Monkey provides two types of commands: the CLI tool itself and Git aliases i
 | `gitmonkey tutorial` | Interactive Git School lessons (learn by doing) |
 | `gitmonkey start [name]` | Create a new project with your preferred stack |
 | `gitmonkey stash` | Manage your stashed changes |
+| `gitmonkey push` | Push with automatic upstream tracking |
+| `gitmonkey worktree:add` | Create a worktree for a branch |
+| `gitmonkey worktree:list` | Show all active worktrees |
+| `gitmonkey worktree:switch` | Navigate between worktrees |
+| `gitmonkey worktree:remove` | Remove a worktree safely |
+| `gitmonkey pivot` | Quick context switching with auto-stashing |
+| `gitmonkey return` | Return to previous context |
+| `gitmonkey whoami` | Show your current Git context |
 | `gitmonkey tips` | View Git tips and tricks |
 | `gitmonkey settings` | Customize your Git Monkey experience |
 | `gitmonkey wizard` | Access advanced Git features |
