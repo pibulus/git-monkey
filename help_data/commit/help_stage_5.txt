@@ -1,0 +1,29 @@
+COMMIT: Advanced Commit Operations
+
+USAGE:
+git commit [<options>] [--] [<pathspec>...]
+
+KEY OPTIONS:
+-a                # Auto-stage modified tracked files
+-p                # Choose hunks interactively
+--amend           # Amend previous commit
+-S[<keyid>]       # GPG-sign commit
+--fixup=<commit>  # Mark as fixup for specified commit
+--squash=<commit> # Mark as squash onto specified commit
+-F <file>         # Read message from file
+
+COMMIT HOOKS:
+prepare-commit-msg   # Populates default message
+commit-msg           # Validates commit message format
+post-commit          # Fires after commit completes
+
+TIP: Use `git rebase -i --autosquash` after creating fixup commits
+     to automatically merge them during rebase operations.
+
+WARNING: Amending pushed commits requires force push and can disrupt
+         collaborators if the commits were already shared.
+
+RELATED:
+git stash       # Temporarily store modified files
+git rebase -i   # Interactive history rewriting
+git cherry-pick # Apply commit from another branch

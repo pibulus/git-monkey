@@ -1,0 +1,25 @@
+PUSH: Publishing Local Commits to Remote Repository
+
+USAGE:
+gitmonkey push [options]
+
+OPTIONS:
+--force, -f     # Force update remote branch (use with caution)
+--no-config     # Don't offer to configure autoSetupRemote
+--yes, -y       # Auto-confirm all prompts
+
+BEHAVIOR:
+- Automatically sets up upstream tracking for new branches
+- Offers to configure git config --global push.autoSetupRemote
+- Provides helpful error messages for common push issues
+
+TIP: For situations where branch histories have diverged but you
+     want to overwrite the remote, use --force with caution.
+
+WARNING: Force pushing rewrites remote history and can cause problems
+         for collaborators who have pulled the original commits.
+
+RELATED COMMANDS:
+git push -u origin <branch>  # Manual upstream setup
+git pull                     # Fetch and merge remote changes
+git fetch                    # Download remote changes without merging

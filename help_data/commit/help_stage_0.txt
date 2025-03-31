@@ -1,0 +1,24 @@
+COMMIT: Saving Your Code Changes
+
+Think of commits like taking a snapshot of your code. Each commit captures 
+exactly what your code looks like at that moment, so you can go back to it later.
+
+BASIC USAGE:
+git add .              # Stage all changed files
+git commit -m "message" # Save changes with a description
+
+WHAT YOU NEED TO KNOW:
+- Commits are ONLY saved on your computer until you push them
+- Always write a clear message explaining WHAT and WHY (not HOW)
+- You can make multiple small commits before pushing
+
+TIP: A good commit message is short but specific:
+     "Add login form validation" is better than "Update code"
+
+NOTE: If you made a mistake in your commit, you can fix it with:
+      gitmonkey undo last-commit
+
+EXAMPLES:
+  git add file.js            # Stage a specific file
+  git add .                  # Stage all changes  
+  git commit -m "Add login button to homepage"

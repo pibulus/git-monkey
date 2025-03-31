@@ -1,0 +1,24 @@
+WORKTREE: Working on Multiple Things at Once
+
+Worktrees are like having several copies of your repository that you can switch
+between without stashing or committing unfinished work.
+
+BASIC USAGE:
+gitmonkey worktree:add feature-name    # Create new worktree
+gitmonkey worktree:switch feature-name # Switch to that worktree
+
+WHAT YOU NEED TO KNOW:
+- Worktrees let you work on multiple branches simultaneously
+- Each worktree is in its own directory but connected to your main repo
+- You can have different branches open at the same time!
+
+TIP: Worktrees are perfect for when you need to fix a bug while in the
+     middle of working on a feature.
+
+NOTE: When using worktrees, you don't need to commit or stash changes
+      before switching context - each worktree keeps its own state.
+
+EXAMPLES:
+  gitmonkey worktree:add bugfix         # Create worktree for a bugfix
+  gitmonkey worktree:list               # See all active worktrees
+  gitmonkey worktree:remove bugfix      # Clean up when done

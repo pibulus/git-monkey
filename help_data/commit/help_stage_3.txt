@@ -1,0 +1,27 @@
+COMMIT: Recording Changes to the Repository
+
+Commits create savepoints in your project's history that you can reference,
+revert to, or analyze later.
+
+USAGE:
+git add [files]        # Stage specific files or patterns
+git commit -m "message" # Record staged changes with a description
+
+ADVANCED OPTIONS:
+-a, --all              # Auto-stage all modified tracked files
+-p, --patch            # Interactively choose hunks to stage
+--amend                # Replace the tip of the current branch
+--no-verify            # Skip pre-commit and commit-msg hooks
+
+TIP: Use `git commit --amend` to modify your most recent commit.
+     This is useful for fixing typos or adding forgotten changes.
+
+NOTE: Conventional commit messages improve repository clarity:
+      "feat: add user authentication"
+      "fix: resolve memory leak in video player"
+      "refactor: simplify payment processing logic"
+
+EXAMPLES:
+  git commit -am "Fix navigation bug in dark mode"
+  git add -p                           # Stage changes interactively
+  git commit --amend --no-edit         # Add changes to previous commit

@@ -1,0 +1,24 @@
+BRANCH: Working on Different Features Separately
+
+Think of branches like parallel universes for your code. Each branch lets you
+work on something new without changing your main code until you're ready.
+
+BASIC USAGE:
+gitmonkey branch new feature-name  # Create a new branch
+gitmonkey branch switch main       # Switch back to main branch
+
+WHAT YOU NEED TO KNOW:
+- Branches let you work on multiple features at the same time
+- Always create a new branch for each new feature or bugfix
+- The "main" branch is usually your most stable, working code
+
+TIP: Give branches clear, descriptive names that explain what you're working on,
+     like "fix-login-button" or "add-dark-mode"
+
+NOTE: When you switch branches, your files will change to match that branch.
+      Make sure you commit your work before switching!
+
+EXAMPLES:
+  gitmonkey branch new user-login    # Create a branch for login feature
+  gitmonkey branch list              # See all your branches
+  gitmonkey branch switch main       # Go back to main branch

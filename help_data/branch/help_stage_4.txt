@@ -1,0 +1,26 @@
+BRANCH: Branch Management Operations
+
+USAGE:
+gitmonkey branch [subcommand] [options] [branch-name]
+
+SUBCOMMANDS:
+new, create    # Create a new branch
+switch         # Switch to a branch
+merge          # Merge a branch into current
+delete, remove # Delete a branch
+list           # List all branches
+
+OPTIONS:
+--force, -f    # Override safety checks
+--yes, -y      # Auto-confirm prompts
+
+TIP: Use `gitmonkey worktree:add branch-name` to work on multiple branches
+     simultaneously without constant context switching.
+
+WARNING: Deleting branches with unmerged changes can cause data loss.
+         Use `gitmonkey branch delete --force` only when necessary.
+
+RELATED COMMANDS:
+gitmonkey worktree  # Multi-branch workflows
+gitmonkey pivot     # Context switching with stashing
+gitmonkey push      # Push branch with auto-upstream

@@ -20,21 +20,27 @@ fi
 
 # Function to show usage help
 show_help() {
-  echo ""
-  box "Git Monkey Worktree Commands"
-  echo ""
-  echo "🌴 Worktrees let you work on multiple branches at the same time, in different folders."
-  echo "   No more stashing! Just jump between contexts without losing your flow."
-  echo ""
-  echo "Commands:"
-  echo "  gitmonkey worktree:add <branch>      - Create a new worktree for a branch"
-  echo "  gitmonkey worktree:list              - Show all your active worktrees"
-  echo "  gitmonkey worktree:switch <branch>   - Jump to a worktree"
-  echo "  gitmonkey worktree:remove <branch>   - Clean up a worktree you don't need"
-  echo "  gitmonkey worktree                   - Shows this help message"
-  echo ""
-  echo "Learn more: gitmonkey learn worktrees"
-  echo ""
+  # Check if we have the new help system available
+  if [ -f "./commands/help.sh" ] && [ -d "./help_data/worktree" ]; then
+    ./commands/help.sh worktree
+  else
+    # Fallback to legacy help
+    echo ""
+    box "Git Monkey Worktree Commands"
+    echo ""
+    echo "🌴 Worktrees let you work on multiple branches at the same time, in different folders."
+    echo "   No more stashing! Just jump between contexts without losing your flow."
+    echo ""
+    echo "Commands:"
+    echo "  gitmonkey worktree:add <branch>      - Create a new worktree for a branch"
+    echo "  gitmonkey worktree:list              - Show all your active worktrees"
+    echo "  gitmonkey worktree:switch <branch>   - Jump to a worktree"
+    echo "  gitmonkey worktree:remove <branch>   - Clean up a worktree you don't need"
+    echo "  gitmonkey worktree                   - Shows this help message"
+    echo ""
+    echo "Learn more: gitmonkey learn worktrees"
+    echo ""
+  fi
 }
 
 # Check if in a git repo

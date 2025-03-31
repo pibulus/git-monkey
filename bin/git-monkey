@@ -74,6 +74,14 @@ case "$COMMAND" in
     echo "Git Monkey v4.1"
     ;;
   help)
+    # Use our new help command
+    ./commands/help.sh "$@"
+    ;;
+  --help|-h)
+    # Route legacy help flags to help command
+    ./commands/help.sh "$@"
+    ;;
+  legacy-help)
     echo "🐒 Git Monkey CLI - The chillest way to Git"
     echo ""
     echo "Available commands:"

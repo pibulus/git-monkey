@@ -1,0 +1,21 @@
+PUSH: Sharing Your Code with Others
+
+Pushing is how you send your commits from your computer to a shared repository
+(like GitHub) so others can see and use your code.
+
+BASIC USAGE:
+gitmonkey push       # Push your current branch
+
+WHAT YOU NEED TO KNOW:
+- You must commit your changes locally before pushing
+- First-time push for a new branch is handled automatically
+- You need internet connection to push
+
+TIP: Push often to avoid big conflicts with teammates' code
+
+NOTE: If your push is rejected, you might need to pull first:
+      git pull
+
+EXAMPLES:
+  gitmonkey push              # Push current branch
+  gitmonkey push --force      # Force push (use carefully!)

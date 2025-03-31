@@ -1,0 +1,28 @@
+WORKTREE: Advanced Multi-Context Git Workflows
+
+USAGE:
+gitmonkey worktree:<subcommand> [options] [arguments]
+
+SUBCOMMANDS:
+add     # Create new worktree: worktree:add [-b] <branch> [<path>]
+list    # Show all worktrees: worktree:list
+switch  # Navigate to worktree: worktree:switch <branch> [--force]
+remove  # Delete worktree: worktree:remove <branch> [--force]
+
+ADVANCED OPTIONS:
+--force   # Override safety checks for uncommitted changes
+--yes     # Auto-confirm all prompts
+
+TIP: Combine with pivot/return for stateful context switching:
+     gitmonkey pivot feature-branch
+     # Work on feature...
+     gitmonkey return  # Returns to previous context
+
+RELATED COMMANDS:
+git worktree prune     # Clean up deleted worktree data
+git worktree lock      # Prevent worktree removal
+git worktree move      # Relocate worktree directory
+
+STATE TRACKING:
+~/.gitmonkey/worktrees.json maintains mappings between branches
+and their corresponding worktree paths for seamless navigation.
