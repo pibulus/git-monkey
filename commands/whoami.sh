@@ -5,6 +5,8 @@
 
 source ./utils/style.sh
 source ./utils/config.sh
+source ./utils/profile.sh
+source ./utils/titles.sh
 
 # State file locations
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"
@@ -105,6 +107,13 @@ main() {
   # Show header 
   echo ""
   box "🐵 Git Monkey Context"
+  echo ""
+  
+  # Show user info and title
+  local user_title=$(get_persistent_title)
+  local tone_stage=$(get_tone_stage)
+  echo "👤 User: $MONKEY_USER"
+  echo "🏆 Title: $user_title (Tone Stage $tone_stage/5)"
   echo ""
   
   # Show repository info

@@ -4,6 +4,8 @@
 
 source ./utils/style.sh
 source ./utils/config.sh
+source ./utils/profile.sh
+source ./utils/titles.sh
 
 say_hi
 ascii_spell "Learning Git by doing, not watching"
@@ -47,6 +49,46 @@ show_example() {
   echo ""
 }
 
+# Function to track tutorial completion
+track_tutorial_progress() {
+  local lesson="$1"
+  local temp_file=$(mktemp)
+  
+  # Get current completed lessons array
+  local completed_lessons=$(get_profile_field "stats.completed_lessons")
+  
+  if [ "$completed_lessons" = "null" ] || [ -z "$completed_lessons" ]; then
+    # Initialize the array if it doesn't exist
+    jq '.stats.completed_lessons = []' "$PROFILE_FILE" > "$temp_file"
+    mv "$temp_file" "$PROFILE_FILE"
+  fi
+  
+  # Add the lesson to completed_lessons if not already there
+  jq --arg lesson "$lesson" \
+    '.stats.completed_lessons = (if .stats.completed_lessons | index($lesson) then .stats.completed_lessons else .stats.completed_lessons + [$lesson] end)' \
+    "$PROFILE_FILE" > "$temp_file"
+  
+  mv "$temp_file" "$PROFILE_FILE"
+  
+  # Check if all lessons are completed
+  local all_lessons=("basic-git" "branching" "undo" "log" "remote")
+  local completed_count=$(get_profile_field "stats.completed_lessons | length")
+  
+  if [ "$completed_count" -ge "${#all_lessons[@]}" ]; then
+    # All lessons completed, mark tutorial as complete
+    mark_tutorial_completed
+    
+    # Check for tone stage advancement
+    local previous_stage=$(get_tone_stage)
+    local current_stage=$(get_tone_stage)
+    
+    if [ "$current_stage" -gt "$previous_stage" ]; then
+      local new_title=$(get_monkey_title "$current_stage")
+      echo "🎉 You've advanced to a new tone stage! You are now a \"$new_title\"."
+    fi
+  fi
+}
+
 select opt in "${options[@]}"; do
     case $REPLY in
         1)
@@ -80,6 +122,10 @@ select opt in "${options[@]}"; do
             
             rainbow_box "🎓 You've completed the basic Git flow lesson!"
             echo "$(random_success)"
+            
+            # Track tutorial progress
+            track_tutorial_progress "basic-git"
+            
             break
             ;;
             
@@ -119,6 +165,10 @@ select opt in "${options[@]}"; do
             
             rainbow_box "🎓 You've completed the branching basics lesson!"
             echo "$(random_success)"
+            
+            # Track tutorial progress
+            track_tutorial_progress "branching"
+            
             break
             ;;
             
@@ -159,6 +209,10 @@ select opt in "${options[@]}"; do
             
             rainbow_box "🎓 You've completed the undoing changes lesson!"
             echo "$(random_success)"
+            
+            # Track tutorial progress
+            track_tutorial_progress "undo"
+            
             break
             ;;
             
@@ -195,6 +249,10 @@ select opt in "${options[@]}"; do
             
             rainbow_box "🎓 You've completed the Git time travel lesson!"
             echo "$(random_success)"
+            
+            # Track tutorial progress
+            track_tutorial_progress "log"
+            
             break
             ;;
             
@@ -241,6 +299,10 @@ select opt in "${options[@]}"; do
             
             rainbow_box "🎓 You've completed the working with remotes lesson!"
             echo "$(random_success)"
+            
+            # Track tutorial progress
+            track_tutorial_progress "remote"
+            
             break
             ;;
             

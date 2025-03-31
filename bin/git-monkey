@@ -2,8 +2,16 @@
 
 # Git Monkey v4 - Main CLI Router
 
+# Load command tracking utility
+source ./utils/command_tracker.sh
+
 COMMAND=$1
 shift
+
+# Show greeting for direct command invocation (not help/version)
+if [ -n "$COMMAND" ] && [ "$COMMAND" != "help" ] && [ "$COMMAND" != "version" ]; then
+  show_greeting
+fi
 
 case "$COMMAND" in
   alias)
@@ -50,6 +58,9 @@ case "$COMMAND" in
   whoami)
     ./commands/whoami.sh "$@"
     ;;
+  title)
+    ./commands/title.sh "$@"
+    ;;
   wizard)
     ./commands/wizard.sh "$@"
     ;;
@@ -73,6 +84,7 @@ case "$COMMAND" in
     echo "  gitmonkey pivot      - Quick context switching with auto-stashing"
     echo "  gitmonkey return     - Return to previous context"
     echo "  gitmonkey whoami     - Show your current Git context"
+    echo "  gitmonkey title      - View and manage your Git Monkey titles"
     echo "  gitmonkey generate   - Generate code and components"
     echo "  gitmonkey learn      - Learn Git concepts and Git Monkey features"
     echo "  gitmonkey tutorial   - Interactive Git tutorials"
