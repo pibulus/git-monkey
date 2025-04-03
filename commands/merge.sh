@@ -299,8 +299,8 @@ Please analyze and provide:
       ;;
   esac
   
-  # Make the AI request
-  local ai_response=$(ai_request "$prompt" "$provider" true 2)
+  # Make the AI request with specific purpose to pass safety check
+  local ai_response=$(ai_request "$prompt" "$provider" true 2 "merge_analysis")
   local request_status=$?
   
   if [ $request_status -ne 0 ] || [ -z "$ai_response" ]; then

@@ -209,8 +209,8 @@ Return 5 branch name suggestions, one per line. Each branch name should be less 
       ;;
   esac
   
-  # Make the AI request
-  local ai_response=$(ai_request "$prompt" "$provider" true 2)
+  # Make the AI request with specific purpose to pass safety check
+  local ai_response=$(ai_request "$prompt" "$provider" true 2 "branch_name")
   local request_status=$?
   
   if [ $request_status -ne 0 ] || [ -z "$ai_response" ]; then

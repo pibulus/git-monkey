@@ -14,12 +14,26 @@ mkdir -p "$AI_CACHE_DIR" 2>/dev/null
 # Cache TTL in seconds (24 hours)
 CACHE_TTL=86400
 
-# Main AI request function
+# Import safety module
+source ./utils/ai_safety.sh
+
+# Main AI request function with added safety guardrails
 ai_request() {
   local prompt="$1"
   local provider="$2"
   local cache_allowed="${3:-true}"
   local max_retries="${4:-2}"
+  local purpose="${5:-general}"
+  
+  # Get current theme and tone stage for context-appropriate responses
+  local theme=$(get_selected_theme 2>/dev/null || echo "jungle")
+  local tone_stage=$(get_tone_stage 2>/dev/null || echo "3")
+  
+  # Run the safety gate check
+  if ! ai_safety_gate "$prompt" "$purpose" "$theme" "$tone_stage"; then
+    # Safety gate rejected the request
+    return 1
+  fi
   
   # If no provider specified, use default
   if [ -z "$provider" ]; then
@@ -55,10 +69,33 @@ ai_request() {
     if [ -n "$cached_response" ]; then
       # Even for cached responses, track minimal token usage for stats
       track_usage "$provider" 1 "" ""
-      echo "$cached_response"
+      
+      # Apply theme-specific formatting to cached response
+      local filtered_response=$(ai_response_filter "$cached_response" "$theme" "$tone_stage")
+      echo "$filtered_response"
       return 0
     fi
   fi
+  
+  # Add theme-specific context to the prompt
+  local themed_prompt=""
+  case "$theme" in
+    "jungle")
+      themed_prompt="As Git Monkey with a playful jungle theme, you are a Git assistant that uses friendly language with occasional monkey and jungle references. Keep responses concise, practical and focused on Git. $prompt"
+      ;;
+    "hacker")
+      themed_prompt="As Git Monkey with a hacker theme, you are a Git assistant that uses technical, precise language with occasional terminal and system references. Keep responses concise, practical and focused on Git. $prompt"
+      ;;
+    "wizard")
+      themed_prompt="As Git Monkey with a wizard theme, you are a Git assistant that uses mystical language with occasional magic references. Keep responses concise, practical and focused on Git. $prompt"
+      ;;
+    "cosmic")
+      themed_prompt="As Git Monkey with a cosmic theme, you are a Git assistant that uses space-themed language with occasional cosmic references. Keep responses concise, practical and focused on Git. $prompt"
+      ;;
+    *)
+      themed_prompt="As Git Monkey, you are a Git assistant focused on practical Git help. Keep responses concise and focused only on Git commands and workflows. $prompt"
+      ;;
+  esac
   
   # Make the API request with retries
   local response=""
@@ -68,8 +105,8 @@ ai_request() {
   while [ $attempt -lt $max_retries ] && [ "$success" = false ]; do
     attempt=$((attempt + 1))
     
-    # Attempt the API request
-    response=$(make_api_request "$prompt" "$provider" "$api_key")
+    # Attempt the API request with the themed prompt
+    response=$(make_api_request "$themed_prompt" "$provider" "$api_key")
     local exit_code=$?
     
     if [ $exit_code -eq 0 ] && [ -n "$response" ]; then
@@ -85,15 +122,18 @@ ai_request() {
     return 1
   fi
   
-  # Track usage with enhanced information
-  track_usage "$provider" 0 "$prompt" "$response"
+  # Filter the response to ensure it stays in character and follows our guidelines
+  local filtered_response=$(ai_response_filter "$response" "$theme" "$tone_stage")
   
-  # Cache the successful response if caching is allowed
+  # Track usage with enhanced information
+  track_usage "$provider" 0 "$prompt" "$filtered_response"
+  
+  # Cache the successful filtered response if caching is allowed
   if [ "$cache_allowed" = true ] && [ -n "$cache_key" ]; then
-    update_cache "$cache_key" "$response"
+    update_cache "$cache_key" "$filtered_response"
   fi
   
-  echo "$response"
+  echo "$filtered_response"
   return 0
 }
 
