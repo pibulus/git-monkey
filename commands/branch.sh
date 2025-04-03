@@ -4,10 +4,73 @@
 
 source ./utils/style.sh
 source ./utils/config.sh
+source ./utils/profile.sh
+source ./utils/identity.sh
+source ./utils/ai_keys.sh
+source ./utils/ai_request.sh
+
+# Get current tone stage and identity for context-aware help
+TONE_STAGE=$(get_tone_stage)
+THEME=$(get_selected_theme)
+IDENTITY=$(get_full_identity)
+
+# Get theme-specific emoji
+get_theme_emoji() {
+  local emoji_type="$1"  # Can be "info", "success", "error", "warning"
+  
+  case "$THEME" in
+    "jungle")
+      case "$emoji_type" in
+        "info") echo "🐒" ;;
+        "success") echo "🍌" ;;
+        "error") echo "🙈" ;;
+        "warning") echo "🙊" ;;
+        *) echo "🐒" ;;
+      esac
+      ;;
+    "hacker")
+      case "$emoji_type" in
+        "info") echo ">" ;;
+        "success") echo "[OK]" ;;
+        "error") echo "[ERROR]" ;;
+        "warning") echo "[WARNING]" ;;
+        *) echo ">" ;;
+      esac
+      ;;
+    "wizard")
+      case "$emoji_type" in
+        "info") echo "✨" ;;
+        "success") echo "🧙" ;;
+        "error") echo "⚠️" ;;
+        "warning") echo "📜" ;;
+        *) echo "✨" ;;
+      esac
+      ;;
+    "cosmic")
+      case "$emoji_type" in
+        "info") echo "🚀" ;;
+        "success") echo "🌠" ;;
+        "error") echo "☄️" ;;
+        "warning") echo "🌌" ;;
+        *) echo "🚀" ;;
+      esac
+      ;;
+    *)
+      case "$emoji_type" in
+        "info") echo "🐒" ;;
+        "success") echo "✅" ;;
+        "error") echo "❌" ;;
+        "warning") echo "⚠️" ;;
+        *) echo "🐒" ;;
+      esac
+      ;;
+  esac
+}
 
 # Process flags
 auto_yes=""
 force=""
+suggest_mode=""
 
 for arg in "$@"; do
   case "$arg" in
@@ -19,8 +82,198 @@ for arg in "$@"; do
       force="true"
       shift
       ;;
+    --suggest|--ai)
+      suggest_mode="true"
+      shift
+      ;;
   esac
 done
+
+# Function to suggest branch names with AI
+suggest_branch_name() {
+  # Check if AI is configured
+  if ! has_ai_providers; then
+    echo "❌ AI features are not configured yet."
+    echo "Run 'gitmonkey settings ai' to set up AI integration."
+    return 1
+  fi
+  
+  # Get default provider
+  local provider=$(get_default_ai_provider)
+  
+  if [ -z "$provider" ]; then
+    echo "❌ No default AI provider set."
+    echo "Run 'gitmonkey settings ai' to set a default provider."
+    return 1
+  fi
+  
+  # Get git context for better suggestions
+  local context=""
+  
+  # Get recent commits
+  local recent_commits=$(git log -5 --pretty=format:"%s" 2>/dev/null)
+  
+  # Get current branch
+  local current_branch=$(git rev-parse --abbrev-ref HEAD 2>/dev/null)
+  
+  # Get open files
+  local changed_files=$(git status -s 2>/dev/null | head -5)
+  
+  # Get repo name
+  local repo_name=$(basename -s .git "$(git config --get remote.origin.url 2>/dev/null)" || echo "local repository")
+  
+  # Show what we're doing
+  # Theme-specific loading messages
+  case "$THEME" in
+    "jungle")
+      echo "🐒 Monkey analyzing your work to suggest branch names..."
+      ;;
+    "hacker")
+      echo "> Analyzing repository context..."
+      echo "> Generating branch name vectors..."
+      ;;
+    "wizard")
+      echo "🧙‍♂️ Consulting the magical branch naming oracle..."
+      ;;
+    "cosmic")
+      echo "🔭 Scanning the code cosmos for branch name patterns..."
+      ;;
+    *)
+      echo "Analyzing repository context for branch name suggestions..."
+      ;;
+  esac
+  
+  # Create a prompt based on the theme
+  local prompt=""
+  
+  case "$THEME" in
+    "jungle")
+      prompt="You're Git Monkey - a helpful, jungle-themed Git assistant. I need suggestions for a Git branch name. Please look at my recent work and suggest 5 meaningful branch names following conventional branch naming patterns like feature/, fix/, chore/, docs/, etc.
+
+Repository: $repo_name
+Current branch: $current_branch
+Recent commits:
+$recent_commits
+Current file changes:
+$changed_files
+
+Give me a list of 5 branch name suggestions, each on a new line. Each branch name should be less than 30 characters, use dashes or underscores as separators (no spaces), and clearly describe what the branch is for based on the context. Don't use bullet points or numbers in the output, just pure branch names."
+      ;;
+    "hacker")
+      prompt="You're a terminal-based Git assistant with a hacker aesthetic. I need suggestions for a Git branch name. Generate 5 branch name suggestions based on the repository context. Follow conventional branch naming patterns like feature/, fix/, chore/, docs/, etc.
+
+Repository: $repo_name
+Current branch: $current_branch
+Recent commits:
+$recent_commits
+Current file changes:
+$changed_files
+
+Output format: 5 branch names, one per line. Keep them under 30 characters, use dashes or underscores as separators (no spaces), and make them descriptive based on context. Pure branch names only, no formatting."
+      ;;
+    "wizard")
+      prompt="You're a magical Git Wizard - a mystical Git assistant. Create 5 branch name suggestions for my repository. Follow conventional branch naming patterns like feature/, fix/, chore/, docs/, etc.
+
+Repository: $repo_name
+Current branch: $current_branch
+Recent commits:
+$recent_commits
+Current file changes:
+$changed_files
+
+Provide 5 branch name suggestions, each on a new line. Names should be less than 30 characters, use dashes or underscores as separators (no spaces), and clearly describe what the branch is for based on the context. No bullet points or numbers, just pure branch names."
+      ;;
+    "cosmic")
+      prompt="You're the Cosmic Git Navigator - a space-themed Git assistant. I need suggestions for a Git branch name that aligns with the cosmic flow of my repository. Suggest 5 branch names following conventional branch naming patterns like feature/, fix/, chore/, docs/, etc.
+
+Repository: $repo_name
+Current branch: $current_branch
+Recent commits:
+$recent_commits
+Current file changes:
+$changed_files
+
+Return 5 branch name suggestions, one per line. Each branch name should be less than 30 characters, use dashes or underscores as separators (no spaces), and clearly describe what the branch is for based on the context. Output only the branch names with no additional formatting."
+      ;;
+    *)
+      prompt="As a Git assistant, suggest 5 meaningful branch names based on this repository context. Follow conventional branch naming patterns like feature/, fix/, chore/, docs/, etc.
+
+Repository: $repo_name
+Current branch: $current_branch
+Recent commits:
+$recent_commits
+Current file changes:
+$changed_files
+
+Return 5 branch name suggestions, one per line. Each branch name should be less than 30 characters, use dashes or underscores as separators (no spaces), and clearly describe what the branch is for based on the context. Output only the branch names with no additional formatting."
+      ;;
+  esac
+  
+  # Make the AI request
+  local ai_response=$(ai_request "$prompt" "$provider" true 2)
+  local request_status=$?
+  
+  if [ $request_status -ne 0 ] || [ -z "$ai_response" ]; then
+    echo "❌ Failed to generate branch name suggestions."
+    echo "Error: $ai_response"
+    return 1
+  fi
+  
+  # Clean up the response and extract the branch names
+  local branch_suggestions=()
+  while read -r line; do
+    # Skip empty lines and lines with formatting characters
+    if [ -n "$line" ] && [[ ! "$line" =~ \*|\-|[0-9]\. ]]; then
+      branch_suggestions+=("$line")
+    fi
+  done <<< "$ai_response"
+  
+  # Show the suggestions
+  echo ""
+  echo "✅ Branch name suggestions ready!"
+  echo ""
+  
+  # Show the suggestions with numbers
+  for i in "${!branch_suggestions[@]}"; do
+    echo "$((i+1))) ${branch_suggestions[$i]}"
+  done
+  
+  echo ""
+  echo "6) Enter a custom branch name"
+  echo "7) Cancel"
+  echo ""
+  
+  read -p "Choose a branch name (1-7): " branch_choice
+  
+  case "$branch_choice" in
+    [1-5])
+      # Check that we have enough suggestions
+      if [ "${#branch_suggestions[@]}" -ge "$branch_choice" ]; then
+        local selected_branch="${branch_suggestions[$((branch_choice-1))]}"
+        create_new_branch "$selected_branch"
+        return $?
+      else
+        echo "❌ Invalid selection."
+        return 1
+      fi
+      ;;
+    6)
+      read -p "Enter your branch name: " custom_branch
+      if [ -z "$custom_branch" ]; then
+        echo "❌ Branch name cannot be empty."
+        return 1
+      fi
+      create_new_branch "$custom_branch"
+      return $?
+      ;;
+    7|*)
+      echo "Branch creation cancelled."
+      return 1
+      ;;
+  esac
+  
+  return 0
+}
 
 # Function to check for uncommitted changes
 has_uncommitted_changes() {
@@ -140,46 +393,87 @@ create_new_branch() {
   if git show-ref --verify --quiet refs/heads/"$new_branch"; then
     # [Step 1] Detect issue - branch already exists
     
-    # [Step 2] Show friendly explanation
-    echo "🐒 The branch '$new_branch' already exists."
-    echo "    Here's what's happening:"
-    echo "    • You're trying to create a branch with a name that's already used"
-    echo "    • Git Monkey can help you handle this situation"
+    # Get theme-specific emojis
+    info_emoji=$(get_theme_emoji "info")
+    warning_emoji=$(get_theme_emoji "warning")
+    success_emoji=$(get_theme_emoji "success")
+    error_emoji=$(get_theme_emoji "error")
     
-    # [Step 3] Offer to fix it
+    # [Step 2] Show friendly explanation with tone-appropriate detail
+    if [ "$TONE_STAGE" -le 2 ]; then
+      # Beginners get detailed explanation with identity
+      echo "$info_emoji Hey $IDENTITY! The branch '$new_branch' already exists."
+      echo "    Here's what's happening:"
+      echo "    • You're trying to create a branch with a name that's already used"
+      echo "    • Git Monkey can help you handle this situation"
+    elif [ "$TONE_STAGE" -le 3 ]; then
+      # Intermediate users get medium explanation
+      echo "$info_emoji Branch '$new_branch' already exists."
+      echo "    You can switch to it or create a different branch."
+    else
+      # Expert users get minimal explanation
+      echo "$info_emoji Branch '$new_branch' exists." 
+    fi
+    
+    # [Step 3] Offer to fix it with tone-appropriate options
     if [ "$auto_yes" == "true" ]; then
       # With auto_yes, just switch to existing branch
       echo "🔄 Switching to existing branch '$new_branch' instead..."
       git checkout "$new_branch"
       return $?
     else
-      echo "What would you like to do?"
+      # Adjust prompt based on tone stage
+      if [ "$TONE_STAGE" -le 2 ]; then
+        echo "What would you like to do, $IDENTITY?"
+      else 
+        echo "Options:"
+      fi
+      
       echo "  1) Switch to the existing branch"
       echo "  2) Create a similar branch with a different name"
       echo "  3) Cancel branch creation"
-      read -p "Enter option (1-3): " option
+      
+      # Customize the prompt based on tone
+      if [ "$TONE_STAGE" -le 2 ]; then
+        read -p "$info_emoji Enter option (1-3): " option
+      else
+        read -p "Enter option (1-3): " option
+      fi
       
       case $option in
         1)
-          echo "🔄 Switching to existing branch '$new_branch'..."
+          if [ "$TONE_STAGE" -le 3 ]; then
+            echo "$info_emoji Switching to existing branch '$new_branch'..."
+          else
+            echo "Switching to '$new_branch'..."
+          fi
           checkout_with_changes_check "$new_branch"
           return $?
           ;;
         2)
-          read -p "Enter a new branch name: " alternative_name
+          if [ "$TONE_STAGE" -le 2 ]; then
+            read -p "Enter a new branch name: " alternative_name
+          else
+            read -p "New branch name: " alternative_name
+          fi
+          
           if [ -z "$alternative_name" ]; then
-            echo "❌ Branch name cannot be empty."
+            echo "$error_emoji Branch name cannot be empty."
             return 1
           fi
           create_new_branch "$alternative_name"
           return $?
           ;;
         3)
-          echo "👍 Cancelled branch creation."
+          if [ "$TONE_STAGE" -le 2 ]; then
+            echo "👍 No problem, $IDENTITY! We've cancelled the branch creation."
+          else
+            echo "👍 Cancelled branch creation."
+          fi
           return 1
           ;;
         *)
-          echo "❌ Invalid option. Cancelled branch creation."
+          echo "$error_emoji Invalid option. Cancelled branch creation."
           return 1
           ;;
       esac
@@ -190,50 +484,102 @@ create_new_branch() {
   if has_uncommitted_changes && [ "$force" != "true" ]; then
     # [Step 1] Detect issue - uncommitted changes exist
     
-    # [Step 2] Show friendly explanation
-    echo "🐒 You have uncommitted changes while creating a new branch."
-    echo "    Here's what's happening:"
-    echo "    • Your working directory has unsaved modifications"
-    echo "    • When you create a new branch, these changes will come with you"
-    echo "    • This is usually fine, but you might want to commit first for cleaner history"
+    # Get theme-specific emojis
+    info_emoji=$(get_theme_emoji "info")
+    warning_emoji=$(get_theme_emoji "warning")
+    success_emoji=$(get_theme_emoji "success")
+    error_emoji=$(get_theme_emoji "error")
     
-    # [Step 3] Offer to fix it
+    # [Step 2] Show friendly explanation with tone-appropriate detail
+    if [ "$TONE_STAGE" -le 2 ]; then
+      # Beginners get detailed explanation with identity
+      echo "$info_emoji $IDENTITY, I noticed you have uncommitted changes while creating a new branch."
+      echo "    Here's what's happening:"
+      echo "    • Your working directory has unsaved modifications"
+      echo "    • When you create a new branch, these changes will come with you"
+      echo "    • This is usually fine, but you might want to commit first for cleaner history"
+    elif [ "$TONE_STAGE" -le 3 ]; then
+      # Intermediate users get medium explanation
+      echo "$info_emoji Uncommitted changes detected while creating branch."
+      echo "    These changes will come with you to the new branch."
+      echo "    Consider committing for cleaner history."
+    else
+      # Expert users get minimal explanation
+      echo "$info_emoji Uncommitted changes detected."
+    fi
+    
+    # [Step 3] Offer to fix it - with tone-appropriate prompting
     if [ "$auto_yes" == "true" ]; then
       # With auto_yes, just proceed
       echo "🔄 Creating branch with uncommitted changes..."
     else
-      echo "How would you like to proceed?"
+      # Adjust prompt based on tone stage
+      if [ "$TONE_STAGE" -le 2 ]; then
+        echo "How would you like to proceed, $IDENTITY?"
+      else
+        echo "Options:"
+      fi
+      
       echo "  1) Create branch with uncommitted changes (they'll come with you)"
       echo "  2) Commit changes to current branch first, then create new branch"
       echo "  3) Cancel branch creation"
-      read -p "Enter option (1-3): " option
+      
+      # Customize the prompt based on tone
+      if [ "$TONE_STAGE" -le 2 ]; then
+        read -p "$info_emoji Enter option (1-3): " option
+      else
+        read -p "Enter option (1-3): " option
+      fi
       
       case $option in
         1)
-          echo "🔄 Creating branch with uncommitted changes..."
+          # Tone-appropriate response
+          if [ "$TONE_STAGE" -le 3 ]; then
+            echo "$info_emoji Creating branch with uncommitted changes..."
+          else
+            echo "Creating branch with changes..."
+          fi
           # Just continue with branch creation
           ;;
         2)
-          echo "👍 Let's commit your changes first."
-          read -p "Enter commit message: " commit_message
+          # Tone-appropriate response
+          if [ "$TONE_STAGE" -le 2 ]; then
+            echo "👍 Good choice, $IDENTITY! Let's commit your changes first."
+            read -p "Enter a commit message that describes your changes: " commit_message
+          else
+            echo "👍 Committing changes first."
+            read -p "Commit message: " commit_message
+          fi
+          
           if [ -z "$commit_message" ]; then
             commit_message="WIP: Changes before creating branch $new_branch"
           fi
           git add .
           git commit -m "$commit_message"
           if [ $? -ne 0 ]; then
-            echo "❌ Failed to commit changes."
+            echo "$error_emoji Failed to commit changes."
             return 1
           fi
-          echo "✅ Changes committed successfully."
+          
+          # Success message based on tone
+          if [ "$TONE_STAGE" -le 2 ]; then
+            echo "$success_emoji Great! Changes committed successfully."
+          else
+            echo "$success_emoji Changes committed."
+          fi
           # Now continue with branch creation
           ;;
         3)
-          echo "👍 Cancelled branch creation."
+          # Tone-appropriate response
+          if [ "$TONE_STAGE" -le 2 ]; then
+            echo "👍 No problem, $IDENTITY! We've cancelled the branch creation."
+          else
+            echo "👍 Branch creation cancelled."
+          fi
           return 1
           ;;
         *)
-          echo "❌ Invalid option. Cancelled branch creation."
+          echo "$error_emoji Invalid option. Branch creation cancelled."
           return 1
           ;;
       esac
@@ -241,21 +587,53 @@ create_new_branch() {
   fi
   
   # Create the branch
+  # Get theme-specific emojis
+  info_emoji=$(get_theme_emoji "info")
+  warning_emoji=$(get_theme_emoji "warning")
+  success_emoji=$(get_theme_emoji "success")
+  error_emoji=$(get_theme_emoji "error")
+  
   git checkout -b "$new_branch" || { 
-    echo "❌ Something went wrong creating branch '$new_branch'"
+    echo "$error_emoji Something went wrong creating branch '$new_branch'"
     echo "$(random_fail)"
     return 1
   }
   
-  rainbow_box "🌱 You're now on '$new_branch'"
-  echo "$(random_success)"
+  # Customize success message based on tone and theme
+  if [ "$TONE_STAGE" -le 2 ]; then
+    # Beginners get colorful enthusiasm
+    rainbow_box "🌱 Awesome, $IDENTITY! You're now on '$new_branch'"
+  elif [ "$TONE_STAGE" -le 3 ]; then
+    # Intermediate users get clear confirmation
+    rainbow_box "🌱 Now on branch '$new_branch'"
+  else
+    # Expert users get minimal confirmation
+    echo "$success_emoji Switched to new branch '$new_branch'"
+  fi
   
-  # [Step 4] Offer smart next steps
+  # Random success message for lower tone stages only
+  if [ "$TONE_STAGE" -le 3 ]; then
+    echo "$(random_success)"
+  fi
+  
+  # [Step 4] Offer smart next steps with tone-aware detail
   echo ""
-  echo "💡 Next steps you might want to consider:"
-  echo "   • Make your changes and commit them: git add . && git commit -m \"your message\""
-  echo "   • Push this branch remotely: gitmonkey push"
-  echo "   • Create a worktree for easy context switching: gitmonkey worktree:add $new_branch"
+  if [ "$TONE_STAGE" -le 2 ]; then
+    # Beginners get detailed next steps with commands
+    echo "$info_emoji Next steps you might want to consider, $IDENTITY:"
+    echo "   • Make your changes and commit them: git add . && git commit -m \"your message\""
+    echo "   • Push this branch remotely: gitmonkey push"
+    echo "   • Create a worktree for easy context switching: gitmonkey worktree:add $new_branch"
+  elif [ "$TONE_STAGE" -le 3 ]; then
+    # Intermediate users get more concise suggestions
+    echo "$info_emoji Suggested next steps:"
+    echo "   • Make changes and commit them"
+    echo "   • Push: gitmonkey push"
+    echo "   • Create worktree: gitmonkey worktree:add $new_branch"
+  else
+    # Expert users get minimal suggestions
+    echo "$info_emoji Next: commit, push, or worktree:add"
+  fi
   
   return 0
 }
@@ -512,8 +890,29 @@ merge_branch() {
     fi
   fi
   
+  # Show animated merge visualization if available
+  if [ -f "./commands/visualize.sh" ]; then
+    # Use the theme-specific merge animation
+    ./commands/visualize.sh --mode=merge "$source_branch" "$target_branch"
+  else
+    # Simple "merging" message as fallback with educational content based on tone
+    if [ "$TONE_STAGE" -le 1 ]; then
+      echo "🔄 Merging '$source_branch' into '$target_branch'..."
+      echo ""
+      echo "Hey $IDENTITY! I'm combining the changes from $source_branch into $target_branch."
+      echo "This means all the new code from $source_branch will become part of $target_branch."
+      echo "Think of it like combining ingredients to make a delicious recipe!"
+      echo ""
+    elif [ "$TONE_STAGE" -le 3 ]; then
+      echo "🔄 Merging '$source_branch' into '$target_branch'..."
+      echo "This will incorporate all commits from $source_branch that aren't already in $target_branch."
+      echo ""
+    else
+      echo "🔄 Merging '$source_branch' into '$target_branch'..."
+    fi
+  fi
+  
   # Perform the merge
-  echo "🔄 Merging '$source_branch' into '$target_branch'..."
   git merge "$source_branch"
   status=$?
   
@@ -526,6 +925,7 @@ merge_branch() {
     echo "💡 Next steps you might want to consider:"
     echo "   • Push the changes: gitmonkey push"
     echo "   • Delete the merged branch if no longer needed: gitmonkey branch (delete option)"
+    echo "   • View branch relationships: gitmonkey visualize"
   else
     echo "❌ Merge encountered issues."
     
@@ -642,12 +1042,17 @@ else
   
   case "$subcommand" in
     new|create)
-      if [ $# -eq 0 ]; then
+      # Check if suggest mode is enabled
+      if [ "$suggest_mode" = "true" ]; then
+        suggest_branch_name
+      elif [ $# -eq 0 ]; then
         echo "❌ No branch name provided."
         echo "Usage: gitmonkey branch new <branch-name>"
+        echo "       gitmonkey branch new --suggest (for AI suggestions)"
         exit 1
+      else
+        create_new_branch "$1"
       fi
-      create_new_branch "$1"
       ;;
     switch|checkout)
       if [ $# -eq 0 ]; then
@@ -691,6 +1096,7 @@ else
       echo "Usage:"
       echo "  gitmonkey branch                   - Interactive branch menu"
       echo "  gitmonkey branch new <name>        - Create a new branch"
+      echo "  gitmonkey branch new --suggest     - Create a branch with AI name suggestions"
       echo "  gitmonkey branch switch <name>     - Switch to a branch"
       echo "  gitmonkey branch merge <src> [dst] - Merge <src> into [dst] (default: main)"
       echo "  gitmonkey branch delete <name>     - Delete a branch"
@@ -699,6 +1105,7 @@ else
       echo "Options:"
       echo "  --yes, -y          - Auto-confirm prompts"
       echo "  --force, -f        - Override safety checks"
+      echo "  --suggest, --ai    - Use AI for suggestions"
       echo ""
       ;;
     *)
