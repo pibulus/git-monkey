@@ -157,7 +157,7 @@ case "$COMMAND" in
     "$PARENT_DIR/commands/help_ai.sh" "$@"
     ;;
   version)
-    echo "Git Monkey v4.1"
+    echo "Git Monkey v4.2.0"
     ;;
   help)
     # Use our new help command
