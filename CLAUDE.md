@@ -1,119 +1,206 @@
-# Git Monkey CLI - Development Guidelines
+# Git Monkey Status Report
 
-## Commands
-- Run CLI: `bash gitmonkey.sh` or `gitmonkey` (if alias installed)
-- Run specific command: `gitmonkey [command]` (e.g., `gitmonkey tutorial`)
-- Run project starter: `gitmonkey start [project_name] [--preset name] [--minimal]`
-- Run worktree commands: `gitmonkey worktree:add <branch>`, `gitmonkey worktree:list`, etc.
-- Run context switching: `gitmonkey pivot <branch>`, `gitmonkey return`
-- Run smart push: `gitmonkey push [--force] [--no-config] [--yes]`
-- Debug command: `bash -x commands/[command].sh` 
-- Check syntax: `shellcheck commands/*.sh utils/*.sh`
-- Verify permissions: `find . -name "*.sh" -not -executable`
-- Test installation: `bash install.sh`
+## Overview
 
-## Project Structure
-- `/bin/git-monkey` - CLI router
-- `/gitmonkey.sh` - Main CLI dispatcher
-- `/commands/` - Command scripts (e.g., `tutorial.sh`, `branch.sh`)
-  - `/commands/push.sh` - Smart push with automatic upstream
-  - `/commands/worktree.sh` - Worktree command router
-  - `/commands/worktree/` - Worktree subcommands
-    - `/commands/worktree/add.sh` - Add new worktrees
-    - `/commands/worktree/list.sh` - List existing worktrees
-    - `/commands/worktree/switch.sh` - Navigate between worktrees
-    - `/commands/worktree/remove.sh` - Delete worktrees
-  - `/commands/pivot.sh` - Context switching with auto-stashing
-  - `/commands/return.sh` - Return to previous context
-  - `/commands/whoami.sh` - Show current Git context
-  - `/commands/learn.sh` - Educational content
-  - `/commands/start.sh` - Main project starter script
-  - `/commands/starter/` - Project starter modules
-    - `/commands/starter/starter_config.sh` - Shared config for starter
-    - `/commands/starter/frameworks/` - Framework setup modules (SvelteKit, Node, Static)
-    - `/commands/starter/ui/` - UI toolkit modules (Tailwind, DaisyUI, etc.)
-    - `/commands/starter/backends/` - Backend service modules (Supabase, Xata)
-    - `/commands/starter/extras/` - Additional setup modules (ESLint, GitHub)
-- `/utils/` - Utility scripts
-  - `/utils/style.sh` - UI and styling utilities
-  - `/utils/config.sh` - Configuration management
-- `/assets/` - ASCII art and other resources
+Git Monkey is a CLI tool that makes Git more accessible through a friendly, guided interface. It combines practical Git functionality with educational elements and an enjoyable UX, following its "Soft Stack" design philosophy of emotional intelligence, delightful UX, slack for chaos, and balancing hacker joy with human ease.
 
-## Code Style
-- Use shebang `#!/bin/bash` for all scripts
-- Source utilities: `source ./utils/style.sh` or `source ./utils/config.sh`
-- Follow consistent indentation (2 spaces)
-- Keep functions small and single-purpose
-- Use descriptive variable names (SNAKE_CASE for constants)
-- Add comments for non-obvious code
-- Error handling: Use `|| { echo "Error message"; exit 1; }` pattern
-- Function naming: Use lowercase_with_underscores
-- Quote all variables: `"$variable"` not $variable
-- Check commands exist before using: `if command -v figlet >/dev/null; then`
-- Prefer local variables in functions: `local my_var="value"`
+## Core Architecture
 
-## Style Utilities
-- `typewriter "Text" [speed]` - Animated text printing
-- `ascii_banner "Text"` - Large ASCII art text
-- `box "Text"` - Create a simple box around text
-- `rainbow_box "Text"` - Colorful box for important messages
-- `line()` - Horizontal line divider
-- `random_greeting()` - Random welcome message
-- `random_success()` - Random success message
-- `random_fail()` - Random failure message
-- `random_tip()` - Random troubleshooting tip
+The application is built with a modular bash script architecture:
 
-## Configuration
-- User settings stored in `$HOME/.gitmonkey/config/settings.conf`
-- Worktree state stored in `$HOME/.gitmonkey/worktrees.json`
-- Pivot state stored in `$HOME/.gitmonkey/pivot.json`
-- Settings include animation, ASCII art, and color preferences
-- Update settings with `update_setting [setting] [value]`
-- Access settings via environment variables (e.g., `$ENABLE_ANIMATIONS`)
+- **Entry Points**: `/bin/git-monkey` and `/gitmonkey.sh` serve as the main CLI routers
+- **Command Modules**: Individual functionality in `/commands/` directory
+- **Utility Libraries**: Shared functions in `/utils/` directory
+- **Assets**: ASCII art and messages in `/assets/` directory
+- **Documentation**: Comprehensive docs in `/docs/` directory
 
-## Worktree Helper Functions
-- `record_worktree` - Save worktree info to state file
-- `remove_worktree_record` - Delete worktree from state file
-- `get_worktree_path` - Get path for a specific branch
-- `has_uncommitted_changes` - Check for unsaved work
+## Key Design Systems
 
-## Context Switching Helpers
-- `save_pivot_state` - Store context before switching
-- `get_pivot_state` - Retrieve stored context
-- `clear_pivot_state` - Clean up after returning
-- `find_stash_entry` - Locate stashed changes by name
+Git Monkey implements several sophisticated design systems:
 
-## UX Principle: Smart Contextual Help & Autoresponse
+1. **Tone Stage System (0-5)**: Adapts language and detail based on user experience level
+   - Stage 0-1: Beginners (detailed, friendly explanations)
+   - Stage 2-3: Intermediate (moderate detail, some technical terminology)
+   - Stage 4-5: Advanced (minimal, technical explanations)
 
-When implementing Git Monkey features, apply this pattern for error handling and friction points:
+2. **Theme System**: Personalized UX with different visual styles and language
+   - Jungle: Playful, nature-themed (monkeys, bananas)
+   - Hacker: Technical, matrix-style (code references)
+   - Wizard: Magical, mystical (spell-casting)
+   - Cosmic: Space-themed (celestial metaphors)
 
+3. **Identity System**: Personalized interactions combining names and titles
+   - Real names or anonymized alternatives
+   - Earned titles based on activity and tone stage
+
+4. **Visual Feedback System**: Terminal-based visual elements
+   - ASCII art for complex concepts
+   - Typewriter effects
+   - Progress visualization
+   - Performance comparison metrics
+
+## Feature Implementation Status
+
+### Git Features (Core)
+- ✅ Git Alias Management
+- ✅ Repository Cloning
+- ✅ Branch Management
+- ✅ Worktree Management
+- ✅ Context Switching
+- ✅ Error Recovery & Undo
+
+### AI-Powered Assistance
+- ✅ AI Integration System
+  - ✅ Multi-provider support (OpenAI, Claude, Gemini, DeepSeek)
+  - ✅ Secure API key management
+  - ✅ Usage tracking and limits
+  - ✅ Theme-aware interactions
+  - ✅ Safety guardrails and ecosystem boundaries
+- ✅ AI Features
+  - ✅ Smart commit message generation
+  - ✅ Contextual branch naming
+  - ✅ Merge risk analysis
+  - ✅ Interactive Git help
+
+### Project Starter Features
+- ✅ Framework Selection
+  - ✅ SvelteKit (standard)
+  - ✅ SvelteKit (modern with server actions)
+  - ✅ Node.js
+  - ✅ Static Sites
+
+- ✅ UI Libraries
+  - ✅ Tailwind CSS
+  - ✅ DaisyUI
+  - ✅ Skeleton UI (standard)
+  - ✅ Skeleton UI (enhanced)
+  - ✅ Bits UI (shadcn-svelte)
+  - ✅ Design Tokens System
+
+- ✅ Backend Integration
+  - ✅ Supabase
+  - ✅ Xata
+
+- ✅ CRUD Generation
+  - ✅ Framework-specific templates
+  - ✅ Backend integration
+  - ✅ Mock data generation
+
+### Educational Features
+- ✅ Git Tutorial System
+- ✅ Contextual Help
+- ✅ Tips & Tricks
+- ✅ ASCII Diagrams
+
+## Recent Enhancements
+
+### 1. AI Integration System
+- Implemented secure multi-provider AI integration (OpenAI, Claude, Gemini, DeepSeek)
+- Created theme-aware AI interactions that match Git Monkey's personality
+- Built advanced safety guardrails to keep AI within Git Monkey's ecosystem
+- Added usage tracking and cost management with limits and notifications
+- Created smart caching system for performance and reduced API costs
+- Integrated AI setup into the onboarding process
+
+### 2. AI-Powered Developer Assistance
+- Created AI-powered commit message suggestions based on staged changes
+- Implemented smart branch naming that analyzes repo context
+- Built merge risk analysis to identify and explain potential conflicts
+- Added an interactive Git help system that answers questions in plain language
+- Ensured all AI features work with and without network connectivity
+
+### 3. Bits UI (shadcn-svelte) Implementation
+- Added comprehensive component library based on shadcn design system
+- Implemented theme-aware and tone-aware setup with educational elements
+- Created theme switching functionality with light/dark mode
+- Added basic components (Button, Card) with customization options
+- Included detailed examples demonstrating component usage
+
+### 4. Enhanced Skeleton UI Integration
+- Added form validation system with error handling
+- Implemented data tables with sorting, filtering, and pagination
+- Created dashboard UI patterns with visualization components
+- Added theme customization with multiple themes
+- Included comprehensive examples of all components
+
+### 5. Design Tokens System
+- Created centralized design variables for colors, spacing, typography
+- Implemented dark/light mode with system preference detection
+- Added theme customization with multiple color schemes
+- Integrated with Tailwind through CSS variables
+- Created theme generator and showcase
+
+## Upcoming Work
+
+The next phase of development focuses on enhancing the CRUD capabilities:
+
+1. **Enhanced CRUD Generator**
+   - Implement modern patterns with server actions
+   - Add Zod schema validation
+   - Create type-safe interfaces
+
+2. **Optimistic UI Updates**
+   - Implement optimistic UI for better UX
+   - Add rollback functionality for failed operations
+   - Create loading states with skeleton UI
+
+3. **Real-time Data Features**
+   - Add real-time subscription support
+   - Implement WebSocket integration
+   - Create polling fallback mechanisms
+
+4. **Filtering and Pagination**
+   - Create reusable filter components
+   - Implement server-side pagination
+   - Add sorting capabilities
+
+## Current Limitations & Future Opportunities
+
+1. **Testing Infrastructure**: Need to implement comprehensive testing for bash scripts
+2. **CI/CD Pipeline**: Create automated testing and deployment workflows
+3. **Plugin System**: Add support for user-created plugins and extensions
+4. **Cloud Integration**: Expand backend options to include more cloud providers
+5. **Performance Optimization**: Improve startup time and reduce dependencies
+6. **AI Expansion**: Enhance AI features with:
+   - Local model support for offline operation
+   - More specialized Git assistance with specific workflows
+   - Extended predictive capabilities for common issues
+   - Training on project-specific patterns
+7. **Voice Features**: Add voice input/output for accessibility
+
+## Technical Debt
+
+1. **Script Standardization**: Some utility scripts need standardization
+2. **Error Handling**: Improve consistent error handling across all commands
+3. **Documentation**: Expand inline documentation for utility functions
+4. **Configuration Management**: Enhance settings persistence and profiles
+5. **AI Provider Abstraction**: Refactor provider-specific code into separate modules
+6. **Response Parsing**: Improve parsing of AI responses for more consistent output
+7. **Safety Mechanism Testing**: Add comprehensive tests for AI safety guardrails
+
+## Usage Instructions (Quick Reference)
+
+To run Git Monkey:
+```bash
+gitmonkey              # Launch interactive menu
+gitmonkey start        # Create new project
+gitmonkey help         # Show all commands
 ```
-[Step 1] Detect issue (e.g., missing upstream, detached HEAD, uncommitted changes)
-[Step 2] Show friendly explanation:
-    "🐒 Looks like you're in [problem]. Here's what's going on..."
-[Step 3] Offer to fix it:
-    "Want me to [solution]? (Y/n)"
-[Step 4] On confirmation, run the fix.
-[Optional] Support `--yes` or `--auto` flag to skip the prompt.
+
+For AI features:
+```bash
+gitmonkey commit --suggest   # AI-powered commit message suggestions
+gitmonkey branch new --suggest  # Smart branch naming
+gitmonkey merge src target --analyze  # Merge risk analysis
+gitmonkey ask "how do I undo my last commit?"  # Interactive Git help
+gitmonkey settings ai  # Configure AI providers and settings
 ```
 
-Apply this pattern to common Git friction points:
-- Pushing with no upstream
-- Switching branches with uncommitted changes
-- Pushing to detached HEAD
-- Rebasing without pulling latest
-- Git pull with divergent branches
-- Adding remotes
-- Renaming branches
-- Orphaned stashes
-- Merging conflicts
-- Cleaning ignored files
-
-## Important Notes
-- For directory navigation commands (pivot, return, worktree:switch), the output must be evaluated:
-  - Use `eval "$(./commands/pivot.sh)"` in the main router
-- All scripts should check for required commands before using them
-- Remember to make all script files executable after creating them
-- Ensure consistent styling with the rest of the codebase
-- Add educational content to `learn.sh` for new features
-- Add the `--yes` flag to all commands that require user confirmation
+For Git aliases:
+```bash
+git s "message"        # Save work (add + commit)
+git lol                # View history with ASCII style
+git new branch-name    # Start new branch
+git yikes              # Reset to last push
+git resurrect          # Recover lost commits
+```
