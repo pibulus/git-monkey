@@ -1,19 +1,58 @@
 #!/bin/bash
 
 # Git Monkey v4 - Main CLI Router
+# Copyright (c) 2025 Pablo Alvarado
+# See LICENSE file for terms
 
-# Load command tracking utility
+# Load utilities
 source ./utils/command_tracker.sh
+source ./utils/profile.sh
+source ./utils/identity.sh
+source ./utils/performance.sh
 
 COMMAND=$1
 shift
 
-# Show greeting for direct command invocation (not help/version)
-if [ -n "$COMMAND" ] && [ "$COMMAND" != "help" ] && [ "$COMMAND" != "version" ]; then
+# Get user profile information
+TONE_STAGE=$(get_tone_stage)
+THEME=$(get_selected_theme)
+IDENTITY=$(get_full_identity)
+
+# Check if this is the first run
+FIRST_RUN=false
+if [ ! -f "$HOME/.gitmonkey/welcomed" ]; then
+  FIRST_RUN=true
+fi
+
+# Show welcome screen on first run or when explicitly requested
+if [ "$FIRST_RUN" = true ] && [ "$COMMAND" != "welcome" ]; then
+  # First time running Git Monkey, show welcome
+  ./commands/welcome.sh
+  # If no command specified, exit after welcome (otherwise continue to requested command)
+  if [ -z "$COMMAND" ]; then
+    exit 0
+  fi
+elif [ "$COMMAND" = "welcome" ]; then
+  # Explicitly requested welcome
+  ./commands/welcome.sh --reset
+  exit 0
+fi
+
+# Show greeting for direct command invocation (not help/version/welcome)
+if [ -n "$COMMAND" ] && [ "$COMMAND" != "help" ] && [ "$COMMAND" != "version" ] && [ "$COMMAND" != "welcome" ]; then
+  # Use our improved greeting system that's identity and theme aware
   show_greeting
+  
+  # Track the command execution for tone stage advancement
+  if [ "$COMMAND" != "settings" ] && [ "$COMMAND" != "identity" ] && [ "$COMMAND" != "title" ]; then
+    increment_command_usage "$COMMAND"
+  fi
 fi
 
 case "$COMMAND" in
+  welcome)
+    ./commands/welcome.sh "$@"
+    ;;
   alias)
     ./commands/alias.sh "$@"
     ;;
@@ -46,6 +85,21 @@ case "$COMMAND" in
     ;;
   generate)
     ./commands/generate.sh "$@"
+    ;;
+  open)
+    ./commands/open.sh "$@"
+    ;;
+  fix)
+    ./commands/fix.sh "$@"
+    ;;
+  conflict|resolve)
+    ./commands/conflict.sh "$@"
+    ;;
+  history|log)
+    ./commands/history.sh "$@"
+    ;;
+  cheatsheet|cheat|reference)
+    ./commands/cheatsheet.sh "$@"
     ;;
   pivot)
     # For pivot, we need to evaluate the output to change directory
@@ -85,6 +139,7 @@ case "$COMMAND" in
     echo "🐒 Git Monkey CLI - The chillest way to Git"
     echo ""
     echo "Available commands:"
+    echo "  gitmonkey welcome    - Run the welcome and onboarding experience"
     echo "  gitmonkey alias      - Install helpful Git aliases"
     echo "  gitmonkey clone      - Clone a repository with guidance"
     echo "  gitmonkey branch     - Create or manage branches"
@@ -98,6 +153,11 @@ case "$COMMAND" in
     echo "  gitmonkey title      - View and manage your Git Monkey titles"
     echo "  gitmonkey identity   - Configure your personalized identity"
     echo "  gitmonkey generate   - Generate code and components"
+    echo "  gitmonkey open       - Open projects in your preferred editor"
+    echo "  gitmonkey fix        - Fix common development issues"
+    echo "  gitmonkey conflict   - Interactive merge conflict resolution"
+    echo "  gitmonkey history    - Visualize and navigate Git history"
+    echo "  gitmonkey cheatsheet - Quick reference for Git commands"
     echo "  gitmonkey learn      - Learn Git concepts and Git Monkey features"
     echo "  gitmonkey tutorial   - Interactive Git tutorials"
     echo "  gitmonkey tips       - Show helpful Git tips"

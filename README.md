@@ -149,5 +149,23 @@ Git Monkey is more than just commands — it's a vibe.
 
 ## 🙏 Credits
 
-Made with bananas and brains by [@pablosoftstack](https://github.com/pablosoftstack)  
+Made with bananas and brains by Pablo Alvarado  
 ASCII powered by lolcat, figlet, boxes, cowsay, and love.
+
+## 📜 Legal
+
+### License
+
+Git Monkey is © 2025 Pablo Alvarado. All rights reserved.
+
+This software is released under a custom license that allows for personal and educational use.
+Commercial use requires explicit written permission from the copyright holder.
+See the [LICENSE](LICENSE) file for details.
+
+### Contributing
+
+We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details on how to get started.
+
+### Code of Conduct
+
+We're committed to providing a welcoming and inspiring community for all. Please read our [Code of Conduct](CODE_OF_CONDUCT.md).
