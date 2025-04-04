@@ -1,49 +1,32 @@
-#!/bin/bash
+#\!/bin/bash
 
 # Load utils
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/titles.sh
-source ./utils/identity.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/profile.sh"
+source "$PARENT_DIR/utils/titles.sh"
+source "$PARENT_DIR/utils/identity.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"  # Added ASCII art utils
 
-# 🔥 Cracktro Intro
+# Get current theme
+THEME=$(get_selected_theme)
+
+# 🔥 Menu Intro
 clear
 
-# Check if ASCII art is enabled
-if [ "$ENABLE_ASCII_ART" = "true" ]; then
-  ascii_banner "GIT MONKEY"
-  echo
-else
-  echo "=== GIT MONKEY ==="
-  echo
-fi
+# Display themed menu header
+display_menu_header
 
 # Get identity for personalized welcome
 full_identity=$(get_full_identity)
 
-# Check if animations are enabled
-if [ "$ENABLE_ANIMATIONS" = "true" ]; then
-  typewriter "🔥 Welcome to Git Monkey CLI, $full_identity – terminal-side clarity, chaos, and command 🔥" 0.015
-else
-  echo "🔥 Welcome to Git Monkey CLI, $full_identity – terminal-side clarity, chaos, and command 🔥"
-fi
+# Display themed greeting
+display_greeting "$THEME"
 
-# Check if colors are enabled
-if [ "$ENABLE_COLORS" = "true" ]; then
-  echo "    powered by bananas, branches, and bravery" | lolcat
-  sleep 0.3
-else
-  echo "    powered by bananas, branches, and bravery"
-fi
-
-box "What do you want to do?"
-
-# Show version
-if [ "$VERBOSITY_LEVEL" = "verbose" ]; then
-  echo "Git Monkey $MONKEY_VERSION | User: $MONKEY_USER | Theme: $MONKEY_THEME"
-  echo
-fi
+# Display themed tip
+display_tip "$THEME"
 
 # 🧭 Menu
 PS3=$'\nChoose an option: '
@@ -56,9 +39,12 @@ options=(
   "Undo something" 
   "Git School (interactive tutorials)" 
   "Show Git tips" 
+  "AI-assisted commit messages"
+  "Get AI-powered Git help"
   "View Git context (whoami)"
   "Manage your title"
   "Setup your identity"
+  "Change theme"
   "Enter Wizard Mode" 
   "Settings" 
   "Exit"
@@ -66,21 +52,26 @@ options=(
 
 select opt in "${options[@]}"; do
     case $REPLY in
-        1) ./commands/alias.sh; break ;;
-        2) ./commands/clone.sh; break ;;
-        3) ./commands/branch.sh; break ;;
-        4) ./commands/stash.sh; break ;;
-        5) ./commands/push.sh; break ;;
-        6) ./commands/undo.sh; break ;;
-        7) ./commands/tutorial.sh; break ;;
-        8) ./commands/tips.sh; break ;;
-        9) ./commands/whoami.sh; break ;;
-        10) ./commands/title.sh; break ;;
-        11) ./commands/identity.sh setup; break ;;
-        12) ./commands/wizard.sh; break ;;
-        13) ./commands/settings.sh; break ;;
-        14) echo "👋 Bye! Come back anytime."; exit 0 ;;
-        *) echo "😵‍💫 Pick a number, not a banana." ;;
+        1) "$PARENT_DIR/commands/alias.sh"; break ;;
+        2) "$PARENT_DIR/commands/clone.sh"; break ;;
+        3) "$PARENT_DIR/commands/branch.sh"; break ;;
+        4) "$PARENT_DIR/commands/stash.sh"; break ;;
+        5) "$PARENT_DIR/commands/push.sh"; break ;;
+        6) "$PARENT_DIR/commands/undo.sh"; break ;;
+        7) "$PARENT_DIR/commands/tutorial.sh"; break ;;
+        8) "$PARENT_DIR/commands/tips.sh"; break ;;
+        9) "$PARENT_DIR/commands/commit.sh"; break ;;
+        10) "$PARENT_DIR/commands/ask.sh"; break ;;
+        11) "$PARENT_DIR/commands/whoami.sh"; break ;;
+        12) "$PARENT_DIR/commands/title.sh"; break ;;
+        13) "$PARENT_DIR/commands/identity.sh" setup; break ;;
+        14) "$PARENT_DIR/utils/theme_manager.sh"; break ;;
+        15) "$PARENT_DIR/commands/wizard.sh"; break ;;
+        16) "$PARENT_DIR/commands/settings.sh"; break ;;
+        17) echo "$(display_success $THEME) Come back anytime\!"; exit 0 ;;
+        *) echo "$(display_error $THEME) Please choose a valid option." ;;
     esac
 done
 
+# Display the footer
+display_menu_footer
