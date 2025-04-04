@@ -1,11 +1,14 @@
-#!/bin/bash
+#\!/bin/bash
 
 # ========= GIT MONKEY AI REQUEST HANDLER =========
 # Central service for all AI provider interactions
 
-source ./utils/ai_keys.sh
-source ./utils/style.sh
-source ./utils/config.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
+source "$DIR/ai_keys.sh"
+source "$DIR/style.sh"
+source "$DIR/config.sh"
 
 # Set up caching directory
 AI_CACHE_DIR="$HOME/.gitmonkey/ai_cache"
@@ -15,7 +18,20 @@ mkdir -p "$AI_CACHE_DIR" 2>/dev/null
 CACHE_TTL=86400
 
 # Import safety module
-source ./utils/ai_safety.sh
+source "$DIR/ai_safety.sh"
+# Import safety module
+source "$DIR/ai_safety.sh"
+
+# Rest of file content below...
+# Set up caching directory
+AI_CACHE_DIR="$HOME/.gitmonkey/ai_cache"
+mkdir -p "$AI_CACHE_DIR" 2>/dev/null
+
+# Cache TTL in seconds (24 hours)
+CACHE_TTL=86400
+
+# Import safety module
+source "$DIR/ai_safety.sh"
 
 # Main AI request function with added safety guardrails
 ai_request() {

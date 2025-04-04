@@ -1,17 +1,18 @@
 #\!/bin/bash
 
-# Final script to fix any remaining issues
+# Remove temporary verification scripts
+rm -f fix_imports.sh fix_ai_imports.sh final_verification.sh
 
-# Remove our temporary scripts
-echo "Cleaning up temporary scripts..."
-rm -f update_utils_imports.sh fix_random_messages.sh fix_say_hi.sh fix_ascii_functions.sh add_missing_theme.sh fix_path_consistency.sh check_command_files.sh fix_last_issues.sh
+# Create a README file for splash directory
+cat > assets/ascii/splash/README.md << 'EOF'
+# Splash Screen Assets
 
-# Make sure all scripts have executable permissions
-echo "Setting executable permissions on all scripts..."
-find ./commands -type f -name "*.sh" -exec chmod +x {} \;
-find ./utils -type f -name "*.sh" -exec chmod +x {} \;
-chmod +x ./bin/git-monkey
-chmod +x ./gitmonkey.sh
-chmod +x ./install.sh
+This directory contains general splash screens that are used when no specific
+theme is active or for the initial welcome screen.
+EOF
 
-echo "All cleanup tasks completed\!"
+# Fix the final import
+sed -i '' -e 's|source ./utils/ai_safety.sh|source "$DIR/ai_safety.sh"|g' utils/ai_request.sh 2>/dev/null || \
+sed -i -e 's|source ./utils/ai_safety.sh|source "$DIR/ai_safety.sh"|g' utils/ai_request.sh
+
+echo "Final cleanup complete\!"
