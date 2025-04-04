@@ -12,6 +12,9 @@ A local-friendly CLI script that helps you:
 - Set up your git aliases with zero friction
 - Clone repos with style and confidence
 - Create and switch branches with helpful guidance
+- Get AI-powered commit messages and branch names
+- Analyze merge risks with AI before conflicts happen
+- Ask Git questions in plain language and get help
 - Manage multiple branches with worktrees
 - Switch contexts rapidly with pivot/return
 - Push with automatic upstream tracking
@@ -36,7 +39,7 @@ You'll be able to run `gitmonkey` from anywhere!
 
 ## 🛠 Commands
 
-Git Monkey provides two types of commands: the CLI tool itself and Git aliases it sets up for you.
+Git Monkey provides multiple types of commands: the core CLI tool, AI-powered features, and Git aliases it sets up for you.
 
 ### CLI Commands
 
@@ -59,6 +62,16 @@ Git Monkey provides two types of commands: the CLI tool itself and Git aliases i
 | `gitmonkey wizard` | Access advanced Git features |
 | `gitmonkey help` | Show all available commands |
 | `gitmonkey version` | Display the current version |
+
+### AI-Powered Features
+
+| Command | What it does |
+|---------|--------------|
+| `gitmonkey commit --suggest` | AI-generated commit messages based on your changes |
+| `gitmonkey branch new --suggest` | Smart branch naming suggestions for your work |
+| `gitmonkey merge <src> <target> --analyze` | AI risk analysis before merging branches |
+| `gitmonkey ask "your git question"` | Interactive Git help in plain language |
+| `gitmonkey settings ai` | Configure AI providers and preferences |
 
 ### Git Aliases
 
@@ -108,6 +121,23 @@ gitmonkey start new-project --preset favorite
 gitmonkey start quick-project --minimal
 ```
 
+## 🧠 AI-Powered Assistance
+
+Git Monkey now includes intelligent AI features that help you work more efficiently:
+
+- **Smart Commit Messages**: Get AI-generated commit suggestions based on your code changes
+- **Branch Name Generator**: Create meaningful branch names based on your repository context
+- **Merge Risk Analysis**: Get a clear explanation of potential merge conflicts before they happen
+- **Interactive Git Help**: Ask questions about Git in plain language and get personalized answers
+
+The AI system adapts to your chosen theme and can work with multiple providers:
+- OpenAI (GPT-4o)
+- Claude (Anthropic)
+- Gemini (Google)
+- DeepSeek
+
+Each feature works with or without AI, so you're never dependent on network connectivity.
+
 ## 🧙‍♂️ Themes & Easter Eggs
 
 Git Monkey is more than just commands — it's a vibe.
@@ -115,7 +145,7 @@ Git Monkey is more than just commands — it's a vibe.
 - ASCII art & typewriter effects
 - Terminal confetti moments
 - Rare fortune cookie messages
-- Secret themes coming soon...
+- Four unique themes: Jungle, Hacker, Wizard, and Cosmic
 
 ## 🙏 Credits
 
