@@ -1,0 +1,6 @@
+Welcome to Git Monkey\! 🐒
+
+Your friendly Git assistant is here to make version control fun and easy.
+Let's swing through your Git workflows together\!
+
+Type 'gitmonkey help' to see all available commands.

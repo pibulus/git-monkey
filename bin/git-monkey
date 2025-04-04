@@ -1,14 +1,17 @@
-#!/bin/bash
+#\!/bin/bash
 
 # Git Monkey v4 - Main CLI Router
 # Copyright (c) 2025 Pablo Alvarado
 # See LICENSE file for terms
 
 # Load utilities
-source ./utils/command_tracker.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/performance.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/command_tracker.sh"
+source "$PARENT_DIR/utils/profile.sh"
+source "$PARENT_DIR/utils/identity.sh"
+source "$PARENT_DIR/utils/performance.sh"
+source "$PARENT_DIR/utils/style.sh"
 
 COMMAND=$1
 shift
@@ -20,120 +23,144 @@ IDENTITY=$(get_full_identity)
 
 # Check if this is the first run
 FIRST_RUN=false
-if [ ! -f "$HOME/.gitmonkey/welcomed" ]; then
+if [ \! -f "$HOME/.gitmonkey/welcomed" ]; then
   FIRST_RUN=true
 fi
 
 # Show welcome screen on first run or when explicitly requested
-if [ "$FIRST_RUN" = true ] && [ "$COMMAND" != "welcome" ]; then
+if [ "$FIRST_RUN" = true ] && [ "$COMMAND" \!= "welcome" ]; then
   # First time running Git Monkey, show welcome
-  ./commands/welcome.sh
+  "$PARENT_DIR/commands/welcome.sh"
   # If no command specified, exit after welcome (otherwise continue to requested command)
   if [ -z "$COMMAND" ]; then
     exit 0
   fi
 elif [ "$COMMAND" = "welcome" ]; then
   # Explicitly requested welcome
-  ./commands/welcome.sh --reset
+  "$PARENT_DIR/commands/welcome.sh" --reset
   exit 0
 fi
 
 # Show greeting for direct command invocation (not help/version/welcome)
-if [ -n "$COMMAND" ] && [ "$COMMAND" != "help" ] && [ "$COMMAND" != "version" ] && [ "$COMMAND" != "welcome" ]; then
+if [ -n "$COMMAND" ] && [ "$COMMAND" \!= "help" ] && [ "$COMMAND" \!= "version" ] && [ "$COMMAND" \!= "welcome" ]; then
   # Use our improved greeting system that's identity and theme aware
-  show_greeting
+  random_greeting
   
   # Track the command execution for tone stage advancement
-  if [ "$COMMAND" != "settings" ] && [ "$COMMAND" != "identity" ] && [ "$COMMAND" != "title" ]; then
+  if [ "$COMMAND" \!= "settings" ] && [ "$COMMAND" \!= "identity" ] && [ "$COMMAND" \!= "title" ]; then
     increment_command_usage "$COMMAND"
   fi
 fi
 
 case "$COMMAND" in
   welcome)
-    ./commands/welcome.sh "$@"
+    "$PARENT_DIR/commands/welcome.sh" "$@"
     ;;
   alias)
-    ./commands/alias.sh "$@"
+    "$PARENT_DIR/commands/alias.sh" "$@"
     ;;
   clone)
-    ./commands/clone.sh "$@"
+    "$PARENT_DIR/commands/clone.sh" "$@"
     ;;
   branch)
-    ./commands/branch.sh "$@"
+    "$PARENT_DIR/commands/branch.sh" "$@"
     ;;
   stash)
-    ./commands/stash.sh "$@"
+    "$PARENT_DIR/commands/stash.sh" "$@"
     ;;
   push)
-    ./commands/push.sh "$@"
+    "$PARENT_DIR/commands/push.sh" "$@"
     ;;
   undo)
-    ./commands/undo.sh "$@"
+    "$PARENT_DIR/commands/undo.sh" "$@"
     ;;
   tips)
-    ./commands/tips.sh "$@"
+    "$PARENT_DIR/commands/tips.sh" "$@"
     ;;
   learn)
-    ./commands/learn.sh "$@"
+    "$PARENT_DIR/commands/learn.sh" "$@"
     ;;
   tutorial|school)
-    ./commands/tutorial.sh "$@"
+    "$PARENT_DIR/commands/tutorial.sh" "$@"
     ;;
   worktree|worktree:*)
-    ./commands/worktree.sh "$@"
+    "$PARENT_DIR/commands/worktree.sh" "$@"
     ;;
   generate)
-    ./commands/generate.sh "$@"
+    "$PARENT_DIR/commands/generate.sh" "$@"
     ;;
   open)
-    ./commands/open.sh "$@"
+    "$PARENT_DIR/commands/open.sh" "$@"
     ;;
   fix)
-    ./commands/fix.sh "$@"
+    "$PARENT_DIR/commands/fix.sh" "$@"
     ;;
   conflict|resolve)
-    ./commands/conflict.sh "$@"
+    "$PARENT_DIR/commands/conflict.sh" "$@"
     ;;
   history|log)
-    ./commands/history.sh "$@"
+    "$PARENT_DIR/commands/history.sh" "$@"
     ;;
   cheatsheet|cheat|reference)
-    ./commands/cheatsheet.sh "$@"
+    "$PARENT_DIR/commands/cheatsheet.sh" "$@"
+    ;;
+  ask)
+    "$PARENT_DIR/commands/ask.sh" "$@"
+    ;;
+  commit)
+    "$PARENT_DIR/commands/commit.sh" "$@"
+    ;;
+  merge)
+    "$PARENT_DIR/commands/merge.sh" "$@"
     ;;
   pivot)
     # For pivot, we need to evaluate the output to change directory
-    eval "$(./commands/pivot.sh "$@")"
+    eval "$("$PARENT_DIR/commands/pivot.sh" "$@")"
     ;;
   return)
     # For return, we need to evaluate the output to change directory
-    eval "$(./commands/return.sh "$@")"
+    eval "$("$PARENT_DIR/commands/return.sh" "$@")"
     ;;
   whoami)
-    ./commands/whoami.sh "$@"
+    "$PARENT_DIR/commands/whoami.sh" "$@"
     ;;
   title)
-    ./commands/title.sh "$@"
+    "$PARENT_DIR/commands/title.sh" "$@"
     ;;
   identity)
-    ./commands/identity.sh "$@"
+    "$PARENT_DIR/commands/identity.sh" "$@"
     ;;
   wizard)
-    ./commands/wizard.sh "$@"
+    "$PARENT_DIR/commands/wizard.sh" "$@"
     ;;
   settings)
-    ./commands/settings.sh "$@"
+    "$PARENT_DIR/commands/settings.sh" "$@"
+    ;;
+  settings-ai)
+    "$PARENT_DIR/commands/settings_ai.sh" "$@"
+    ;;
+  visualize)
+    "$PARENT_DIR/commands/visualize.sh" "$@"
+    ;;
+  schema)
+    "$PARENT_DIR/commands/schema.sh" "$@"
+    ;;
+  start)
+    "$PARENT_DIR/commands/start.sh" "$@"
+    ;;
+  help-ai)
+    "$PARENT_DIR/commands/help_ai.sh" "$@"
     ;;
   version)
     echo "Git Monkey v4.1"
     ;;
   help)
     # Use our new help command
-    ./commands/help.sh "$@"
+    "$PARENT_DIR/commands/help.sh" "$@"
     ;;
   --help|-h)
     # Route legacy help flags to help command
-    ./commands/help.sh "$@"
+    "$PARENT_DIR/commands/help.sh" "$@"
     ;;
   legacy-help)
     echo "🐒 Git Monkey CLI - The chillest way to Git"
@@ -146,7 +173,10 @@ case "$COMMAND" in
     echo "  gitmonkey stash      - Stash your changes for later"
     echo "  gitmonkey push       - Push with automatic upstream tracking"
     echo "  gitmonkey undo       - Undo mistakes safely"
-    echo "  gitmonkey worktree   - Work on multiple branches at once (try this!)"
+    echo "  gitmonkey ask        - Get AI-powered Git help"
+    echo "  gitmonkey commit     - Generate AI-assisted commit messages"
+    echo "  gitmonkey merge      - Analyze merge risks with AI"
+    echo "  gitmonkey worktree   - Work on multiple branches at once"
     echo "  gitmonkey pivot      - Quick context switching with auto-stashing"
     echo "  gitmonkey return     - Return to previous context"
     echo "  gitmonkey whoami     - Show your current Git context"
@@ -163,15 +193,15 @@ case "$COMMAND" in
     echo "  gitmonkey tips       - Show helpful Git tips"
     echo "  gitmonkey wizard     - Access advanced Git features"
     echo "  gitmonkey settings   - Customize your Git Monkey experience"
+    echo "  gitmonkey settings-ai- Configure AI providers and settings"
     echo "  gitmonkey version    - Show current version"
     echo "  gitmonkey help       - Show this help message"
     echo ""
     echo "Running without a command opens the interactive menu."
     echo ""
-    echo "💡 Try: gitmonkey worktree:add <branch> to start using worktrees!"
+    echo "💡 Try: gitmonkey worktree:add <branch> to start using worktrees\!"
     ;;
   *)
-    ./commands/menu.sh
+    "$PARENT_DIR/commands/menu.sh"
     ;;
 esac
-
