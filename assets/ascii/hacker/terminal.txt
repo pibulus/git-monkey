@@ -1,0 +1,8 @@
+  ┌───────────────────────────────────────┐
+  │                                       │
+  │  $ sudo git monkey --h4ck --the --pl4net   │
+  │  > ACCESS GRANTED                      │
+  │  > INITIALIZING SEQUENCE...           │
+  │  > READY FOR COMMAND INPUT...         │
+  │                                       │
+  └───────────────────────────────────────┘

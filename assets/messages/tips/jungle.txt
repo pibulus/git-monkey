@@ -1,0 +1,6 @@
+🌴 Try swinging to 'git stash' to store your changes temporarily.
+🐒 Remember to check 'git status' before committing your jungle work.
+🍌 Git monkey tip: Use 'git pull' before you start new work.
+🦍 Gorilla wisdom: Name your branches descriptively for jungle navigation.
+🌿 Jungle trick: 'git checkout -b new-branch' creates and switches in one move.
+🥥 Coconut knowledge: 'git log --oneline' shows a compact history.

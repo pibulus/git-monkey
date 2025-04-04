@@ -1,0 +1,6 @@
+🧙 Ancient Git wisdom: 'git reflog' can recover deleted commits.
+✨ Magical shortcut: 'git commit -am' adds and commits in one spell.
+🔮 Crystal ball tip: 'git blame' reveals who last modified each line.
+🪄 Wand gesture: 'git push --force-with-lease' is safer than force push.
+🧪 Alchemical formula: 'git merge --squash' combines commits into one.
+🌙 Moonlight revelation: 'git cherry-pick' applies specific commits to your branch.
