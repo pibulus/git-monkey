@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY HISTORY VISUALIZATION =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Visual and interactive way to explore Git history
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/performance.sh
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)

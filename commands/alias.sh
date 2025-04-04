@@ -2,10 +2,18 @@
 
 # ========= GIT MONKEY ALIAS INSTALLER =========
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_spell "Installing your Git powers..."
 
 # Core aliases with gentle, human-centered explanations
@@ -37,7 +45,7 @@ done
 # Confirmation + tips
 rainbow_box "✅ Git Monkey aliases installed!"
 echo ""
-typewriter "$(random_success)" 0.02
+typewriter "$(display_success "$THEME")" 0.02
 echo ""
 echo "Here are a few to try:" | lolcat
 echo "  git s \"message\"     → Save your work (add + commit)"

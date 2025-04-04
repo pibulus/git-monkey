@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY VISUALIZATION TOOL =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Visual representation of git information with theme-specific styling
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)

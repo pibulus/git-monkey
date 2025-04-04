@@ -16,7 +16,7 @@ setup_flowbite() {
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -42,7 +42,7 @@ setup_flowbite() {
       
       # Check if installation was successful
       if [ $? -ne 0 ]; then
-        typewriter "$(random_fail) Something went wrong installing Flowbite." 0.02
+        typewriter "$(display_error "$THEME") Something went wrong installing Flowbite." 0.02
         return 1
       fi
       
@@ -417,7 +417,7 @@ EOF
       
       # Check if installation was successful
       if [ $? -ne 0 ]; then
-        typewriter "$(random_fail) Something went wrong installing Flowbite." 0.02
+        typewriter "$(display_error "$THEME") Something went wrong installing Flowbite." 0.02
         return 1
       fi
       
@@ -740,7 +740,7 @@ EOF
       
       # Check if installation was successful
       if [ $? -ne 0 ]; then
-        typewriter "$(random_fail) Something went wrong installing Flowbite." 0.02
+        typewriter "$(display_error "$THEME") Something went wrong installing Flowbite." 0.02
         return 1
       fi
       
@@ -1091,7 +1091,7 @@ EOF
   
   # Success message
   rainbow_box "✅ Flowbite set up successfully!"
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY WORKTREE COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Create and manage Git worktrees with a monkey-friendly interface
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)

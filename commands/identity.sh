@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY IDENTITY COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Manage your personalized Git Monkey identity
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/titles.sh
-source ./utils/identity.sh
 
 # Show usage information
 show_usage() {

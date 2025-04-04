@@ -64,10 +64,10 @@ if has_upstream; then
 
   # Add friendly success message
   if [ $? -eq 0 ]; then
-    echo "✅ $(random_success)"
+    echo "✅ $(display_success "$THEME")"
   else
-    echo "❌ $(random_fail)"
-    echo "💡 $(random_tip)"
+    echo "❌ $(display_error "$THEME")"
+    echo "💡 $(display_tip "$THEME")"
   fi
   
   exit $?
@@ -195,9 +195,9 @@ if [ $push_result -eq 0 ]; then
   
   # Tone-appropriate success message
   if [ "$TONE_STAGE" -le 2 ]; then
-    echo "$success_emoji Awesome job, $IDENTITY! $(random_success)"
+    echo "$success_emoji Awesome job, $IDENTITY! $(display_success "$THEME")"
   else
-    echo "$success_emoji $(random_success)"
+    echo "$success_emoji $(display_success "$THEME")"
   fi
   
   # Check if we should offer to configure autoSetupRemote
@@ -275,7 +275,7 @@ else
       ;;
   esac
   
-  echo "$error_emoji $(random_fail)"
+  echo "$error_emoji $(display_error "$THEME")"
   
   # Apply contextual help for common push errors with tone-appropriate detail
   if [ $push_result -eq 128 ]; then
@@ -300,7 +300,7 @@ else
   
   # Only show tips for lower tone stages
   if [ "$TONE_STAGE" -le 3 ]; then
-    echo "💡 $(random_tip)"
+    echo "💡 $(display_tip "$THEME")"
   fi
 fi
 

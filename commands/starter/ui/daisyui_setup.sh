@@ -16,7 +16,7 @@ setup_daisyui() {
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -37,7 +37,7 @@ setup_daisyui() {
   
   # Check if installation was successful
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Something went wrong installing DaisyUI." 0.02
+    typewriter "$(display_error "$THEME") Something went wrong installing DaisyUI." 0.02
     return 1
   fi
   
@@ -484,7 +484,7 @@ EOF
   
   # Success message
   rainbow_box "✅ DaisyUI set up successfully!"
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

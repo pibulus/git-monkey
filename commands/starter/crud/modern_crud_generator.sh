@@ -1,6 +1,16 @@
 #!/bin/bash
 
 # ========= GIT MONKEY MODERN CRUD GENERATOR =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Phase 3 implementation - Enhanced CRUD generator with:
 # - Server Actions
 # - Zod Validation
@@ -9,9 +19,6 @@
 # - Filtering and Pagination
 
 # Source utilities and dependencies
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/performance.sh
 source ./commands/starter/starter_config.sh
 
 # Get theme-specific emoji

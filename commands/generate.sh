@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY GENERATE COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Command to generate various code elements
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # Function to show available generators
 show_generators() {

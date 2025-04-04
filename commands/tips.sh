@@ -2,10 +2,18 @@
 
 # ========= GIT MONKEY TIPS & TRICKS =========
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_spell "Git wisdom for curious monkeys"
 
 # Array of Git tips
@@ -49,5 +57,5 @@ while read -r input; do
 done
 
 echo ""
-typewriter "$(random_success)" 0.02
+typewriter "$(display_success "$THEME")" 0.02
 echo ""

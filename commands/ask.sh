@@ -1,12 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY ASK - AI-POWERED GIT HELP =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Interactive assistant for Git questions
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/ai_keys.sh
-source ./utils/ai_request.sh
 
 # Get theme for styling
 THEME=$(get_selected_theme 2>/dev/null || echo "jungle")

@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY TITLE COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # View and manage your Git Monkey titles
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/titles.sh
-source ./utils/identity.sh
 
 # Function to show usage
 show_usage() {

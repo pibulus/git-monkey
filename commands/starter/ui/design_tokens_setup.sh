@@ -115,7 +115,7 @@ setup_design_tokens() {
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -1518,7 +1518,7 @@ EOF
   
   # Random success message (fun for all tone levels)
   echo ""
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   # Next steps - tone appropriate
   if [ "$TONE_STAGE" -le 2 ]; then

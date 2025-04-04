@@ -2,10 +2,18 @@
 
 # ========= GIT MONKEY UNDO & REVERT TOOL =========
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_spell "Rewind, reset, undo... breathe"
 
 box "Choose your git undo move:"
@@ -25,7 +33,7 @@ select opt in "${options[@]}"; do
             typewriter "Running: git reset --soft HEAD~1" 0.015
             git reset --soft HEAD~1
             rainbow_box "🔁 Commit undone. Your code is still here."
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         2)
@@ -35,7 +43,7 @@ select opt in "${options[@]}"; do
             if [[ "$sure" =~ ^[Yy]$ ]]; then
               git reset --hard HEAD~1
               rainbow_box "💀 Commit nuked. We go again."
-              echo "$(random_success)"
+              echo "$(display_success "$THEME")"
             else
               echo "😅 Phew. You dodged a bullet."
             fi
@@ -46,7 +54,7 @@ select opt in "${options[@]}"; do
             typewriter "Running: git reset --hard origin/main" 0.015
             git reset --hard origin/main
             rainbow_box "🧼 Clean slate. Local matches remote."
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         4)

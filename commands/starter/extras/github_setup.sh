@@ -30,14 +30,14 @@ setup_github() {
     gh auth login
     
     if [ $? -ne 0 ]; then
-      typewriter "$(random_fail) GitHub authentication failed." 0.02
+      typewriter "$(display_error "$THEME") GitHub authentication failed." 0.02
       return 1
     fi
   fi
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -113,7 +113,7 @@ EOF
   fi
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to create GitHub repository." 0.02
+    typewriter "$(display_error "$THEME") Failed to create GitHub repository." 0.02
     return 1
   fi
   
@@ -134,7 +134,7 @@ EOF
   git push -u origin main > /dev/null 2>&1 || git push -u origin master > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to push to GitHub." 0.02
+    typewriter "$(display_error "$THEME") Failed to push to GitHub." 0.02
     typewriter "You might need to manually push with 'git push -u origin main'" 0.02
     return 1
   fi
@@ -200,7 +200,7 @@ EOF
   # Success message
   rainbow_box "✅ GitHub repository created successfully!"
   echo "🔗 Repository URL: $REPO_URL"
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

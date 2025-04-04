@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY RETURN COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Returns to previous context, restoring stashed work from pivot
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # State file locations
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"

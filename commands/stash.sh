@@ -2,10 +2,18 @@
 
 # ========= GIT MONKEY STASH MANAGER =========
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_spell "Stash your changes for safekeeping"
 
 box "What would you like to do with your stash?"
@@ -38,7 +46,7 @@ select opt in "${options[@]}"; do
             fi
             
             rainbow_box "🧸 Changes safely stashed away"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         2)
@@ -82,7 +90,7 @@ select opt in "${options[@]}"; do
                 break
             fi
             
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         3)
@@ -129,7 +137,7 @@ select opt in "${options[@]}"; do
                 break
             fi
             
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         5)
@@ -171,7 +179,7 @@ select opt in "${options[@]}"; do
             
             git stash branch "$branch_name" "stash@{$stash_num}"
             rainbow_box "🌱 Created new branch '$branch_name' from stash@{$stash_num}"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         6)

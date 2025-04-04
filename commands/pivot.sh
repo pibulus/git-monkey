@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY PIVOT COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Quickly switch context by stashing current work and creating/opening a worktree
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # State file locations
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"

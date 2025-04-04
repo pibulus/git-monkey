@@ -16,7 +16,7 @@ setup_shoelace() {
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -31,7 +31,7 @@ setup_shoelace() {
   
   # Check if installation was successful
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Something went wrong installing Shoelace." 0.02
+    typewriter "$(display_error "$THEME") Something went wrong installing Shoelace." 0.02
     return 1
   fi
   
@@ -755,7 +755,7 @@ EOF
   
   # Success message
   rainbow_box "✅ Shoelace Web Components set up successfully!"
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

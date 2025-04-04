@@ -2,11 +2,16 @@
 
 # ========= GIT MONKEY CLONE COMMAND =========
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/performance.sh
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)
@@ -72,7 +77,7 @@ success_emoji=$(get_theme_emoji "success")
 error_emoji=$(get_theme_emoji "error")
 warning_emoji=$(get_theme_emoji "warning")
 
-say_hi
+display_splash "$THEME"
 
 # Use tone-appropriate introduction
 if [ "$TONE_STAGE" -le 2 ]; then
@@ -109,7 +114,7 @@ if [ -z "$repo_url" ]; then
   else
     echo "$error_emoji No URL entered."
   fi
-  echo "$(random_fail)"
+  echo "$(display_error "$THEME")"
   
   # Tone-appropriate help
   if [ "$TONE_STAGE" -le 3 ]; then
@@ -147,7 +152,7 @@ if [ $status -eq 0 ]; then
   # Success message with tone-appropriate styling
   if [ "$TONE_STAGE" -le 2 ]; then
     rainbow_box "$success_emoji Repo '$repo_name' cloned successfully!"
-    typewriter "$(random_success)" 0.02
+    typewriter "$(display_success "$THEME")" 0.02
     
     # Show performance data occasionally for beginners
     if (( $(echo "$duration < 5.0" | bc -l) )); then
@@ -159,7 +164,7 @@ if [ $status -eq 0 ]; then
     read -p "$info_emoji $IDENTITY, want to enter '$repo_name' right now? (y/n): " cdnow
   elif [ "$TONE_STAGE" -le 3 ]; then
     rainbow_box "$success_emoji '$repo_name' cloned successfully!"
-    echo "$(random_success)"
+    echo "$(display_success "$THEME")"
     
     # Show quick performance data for intermediate users
     if (( $(echo "$duration < 5.0" | bc -l) )); then
@@ -210,11 +215,11 @@ if [ $status -eq 0 ]; then
   fi
 else
   echo ""
-  echo "$error_emoji Something didn't work. $(random_fail)"
+  echo "$error_emoji Something didn't work. $(display_error "$THEME")"
   
   # Tone-appropriate help
   if [ "$TONE_STAGE" -le 3 ]; then
-    echo "💡 Here's a tip: $(random_tip)"
+    echo "💡 Here's a tip: $(display_tip "$THEME")"
     echo ""
     echo "Try cloning again with:"
     echo "  git clone $repo_url" | lolcat

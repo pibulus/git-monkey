@@ -1,14 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY MERGE TOOL =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Enhanced merge functionality with AI risk analysis
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/ai_keys.sh
-source ./utils/ai_request.sh
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)
@@ -420,7 +424,7 @@ perform_merge() {
   if [ $merge_status -eq 0 ]; then
     # Successful merge
     rainbow_box "✅ Successfully merged '$source_branch' into '$target_branch'!"
-    echo "$(random_success)"
+    echo "$(display_success "$THEME")"
   else
     # Merge had conflicts or other issues
     echo "⚠️ Merge encountered issues."
@@ -439,7 +443,7 @@ perform_merge() {
       echo "Or to abort the merge: git merge --abort"
     else
       echo "❌ Merge failed for an unknown reason."
-      echo "$(random_fail)"
+      echo "$(display_error "$THEME")"
     fi
   fi
   
@@ -480,7 +484,7 @@ main() {
   
   # Interactive mode if no arguments
   if [ $# -eq 0 ]; then
-    say_hi
+    display_splash "$THEME"
     ascii_spell "Merge branches together"
     
     echo ""

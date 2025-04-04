@@ -1,11 +1,20 @@
 #!/bin/bash
 
 # ========= GIT MONKEY CRUD GENERATOR =========
+# ===========================
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Generates ready-to-use, working CRUD templates based on framework and backend
 
 # Source utilities
-source ./utils/style.sh
-source ./utils/config.sh
 source ./commands/starter/starter_config.sh
 
 # Default values
@@ -151,7 +160,6 @@ handle_error() {
 }
 
 # Theme-specific styling functions
-# ===========================
 
 # Apply theme-specific styling to text
 theme_text() {

@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY HELP COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Provides tone-modulated help for various Git Monkey commands
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/help_engine.sh
 
 # Function to show usage
 show_usage() {

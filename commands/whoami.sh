@@ -1,13 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY WHOAMI COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Shows your current Git context in a monkey-friendly way
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/titles.sh
-source ./utils/identity.sh
 
 # State file locations
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"

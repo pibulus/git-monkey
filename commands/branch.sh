@@ -2,12 +2,16 @@
 
 # ========= GIT MONKEY BRANCH TOOL =========
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/identity.sh
-source ./utils/ai_keys.sh
-source ./utils/ai_request.sh
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
 
 # Get current tone stage and identity for context-aware help
 TONE_STAGE=$(get_tone_stage)
@@ -595,7 +599,7 @@ create_new_branch() {
   
   git checkout -b "$new_branch" || { 
     echo "$error_emoji Something went wrong creating branch '$new_branch'"
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -613,7 +617,7 @@ create_new_branch() {
   
   # Random success message for lower tone stages only
   if [ "$TONE_STAGE" -le 3 ]; then
-    echo "$(random_success)"
+    echo "$(display_success "$THEME")"
   fi
   
   # [Step 4] Offer smart next steps with tone-aware detail
@@ -778,10 +782,10 @@ delete_branch() {
   
   if [ $status -eq 0 ]; then
     rainbow_box "💥 Deleted '$branch_to_delete'"
-    echo "$(random_success)"
+    echo "$(display_success "$THEME")"
   else
     echo "❌ Failed to delete branch '$branch_to_delete'"
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
   fi
   
   return $status
@@ -918,7 +922,7 @@ merge_branch() {
   
   if [ $status -eq 0 ]; then
     rainbow_box "🪄 Merged '$source_branch' into '$target_branch'"
-    echo "$(random_success)"
+    echo "$(display_success "$THEME")"
     
     # Suggest next steps
     echo ""
@@ -940,7 +944,7 @@ merge_branch() {
       echo ""
       echo "    Or if you want to abort the merge: git merge --abort"
     else
-      echo "$(random_fail)"
+      echo "$(display_error "$THEME")"
     fi
   fi
   
@@ -950,7 +954,7 @@ merge_branch() {
 # Main branch interface
 if [ $# -eq 0 ]; then
   # Interactive mode
-  say_hi
+  display_splash "$THEME"
   ascii_spell "Branches are just save slots for ideas"
   
   echo ""
@@ -1023,7 +1027,7 @@ if [ $# -eq 0 ]; then
         echo ""
         git branch -vv
         echo ""
-        echo "$(random_success)"
+        echo "$(display_success "$THEME")"
         break
         ;;
       6)

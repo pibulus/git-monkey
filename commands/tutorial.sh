@@ -2,12 +2,18 @@
 
 # ========= GIT MONKEY TUTORIAL MODE =========
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/profile.sh
-source ./utils/titles.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_spell "Learning Git by doing, not watching"
 
 box "Git School: Choose Your Lesson"
@@ -121,7 +127,7 @@ select opt in "${options[@]}"; do
             try_it
             
             rainbow_box "🎓 You've completed the basic Git flow lesson!"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             
             # Track tutorial progress
             track_tutorial_progress "basic-git"
@@ -164,7 +170,7 @@ select opt in "${options[@]}"; do
             try_it
             
             rainbow_box "🎓 You've completed the branching basics lesson!"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             
             # Track tutorial progress
             track_tutorial_progress "branching"
@@ -208,7 +214,7 @@ select opt in "${options[@]}"; do
             try_it
             
             rainbow_box "🎓 You've completed the undoing changes lesson!"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             
             # Track tutorial progress
             track_tutorial_progress "undo"
@@ -248,7 +254,7 @@ select opt in "${options[@]}"; do
             try_it
             
             rainbow_box "🎓 You've completed the Git time travel lesson!"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             
             # Track tutorial progress
             track_tutorial_progress "log"
@@ -298,7 +304,7 @@ select opt in "${options[@]}"; do
             try_it
             
             rainbow_box "🎓 You've completed the working with remotes lesson!"
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             
             # Track tutorial progress
             track_tutorial_progress "remote"

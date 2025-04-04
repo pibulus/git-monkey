@@ -221,7 +221,7 @@ setup_modern_sveltekit() {
   
   # Navigate to parent directory if creating in a subfolder
   cd "$(dirname "$project_path")" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -315,13 +315,13 @@ setup_modern_sveltekit() {
   
   # Check if creation was successful
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Something went wrong creating the SvelteKit project." 0.02
+    typewriter "$(display_error "$THEME") Something went wrong creating the SvelteKit project." 0.02
     return 1
   fi
   
   # Navigate to the project directory
   cd "$project_name" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -330,7 +330,7 @@ setup_modern_sveltekit() {
   npm install > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Something went wrong installing dependencies." 0.02
+    typewriter "$(display_error "$THEME") Something went wrong installing dependencies." 0.02
     return 1
   fi
   
@@ -1158,7 +1158,7 @@ EOF
   
   # Random success message (fun for all tone levels)
   echo ""
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   # Next steps - tone appropriate
   echo ""

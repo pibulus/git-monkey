@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY WORKTREE LIST COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Lists all worktrees with helpful information
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # State file location
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"

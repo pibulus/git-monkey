@@ -1,12 +1,20 @@
 #!/bin/bash
 
 # ========= GIT MONKEY AI HELP COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Displays help information about AI features
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+display_splash "$THEME"
 ascii_spell "AI Features Guide"
 
 # Check if a markdown viewer is available

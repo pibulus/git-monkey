@@ -1,11 +1,19 @@
 #!/bin/bash
 
 # ========= GIT MONKEY CRUD INTEGRATOR =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Integrates the modern CRUD generator with the existing CRUD generator
 
 # Import utilities
-source ./utils/style.sh
-source ./utils/config.sh
 
 # Function to integrate modern CRUD options into the main generator
 integrate_modern_crud() {

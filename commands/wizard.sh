@@ -2,10 +2,18 @@
 
 # ========= GIT MONKEY WIZARD MODE =========
 
-source ./utils/style.sh
-source ./utils/config.sh
 
-say_hi
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
+
+display_splash "$THEME"
 ascii_toilet "Wizard Mode"
 
 ascii_spell "Careful... here be dragons."
@@ -32,7 +40,7 @@ select opt in "${options[@]}"; do
             echo "To recover something, cast:"
             echo "  git checkout -b rescue-branch <hash>"
             echo ""
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         2)
@@ -41,7 +49,7 @@ select opt in "${options[@]}"; do
             git checkout "$cherry_branch"
             git cherry-pick "$cherry_hash"
             rainbow_box "✨ That commit now lives here too."
-            echo "$(random_success)"
+            echo "$(display_success "$THEME")"
             break
             ;;
         3)
@@ -67,7 +75,7 @@ select opt in "${options[@]}"; do
             if [[ "$confirm" =~ ^[Yy]$ ]]; then
               git clean -f -d
               rainbow_box "🧼 Untracked files swept into the void."
-              echo "$(random_success)"
+              echo "$(display_success "$THEME")"
             else
               echo "🫧 No worries, apprentice. The mess remains... for now."
             fi

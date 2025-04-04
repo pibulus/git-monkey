@@ -22,14 +22,14 @@ setup_node() {
   
   # Navigate to parent directory
   cd "$(dirname "$project_path")" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
   # Create project directory
   mkdir -p "$project_name"
   cd "$project_name" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -57,7 +57,7 @@ setup_node() {
   
   # Check if initialization was successful
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Something went wrong initializing package.json." 0.02
+    typewriter "$(display_error "$THEME") Something went wrong initializing package.json." 0.02
     return 1
   fi
   
@@ -67,7 +67,7 @@ setup_node() {
     npm install express > /dev/null 2>&1
     
     if [ $? -ne 0 ]; then
-      typewriter "$(random_fail) Something went wrong installing Express." 0.02
+      typewriter "$(display_error "$THEME") Something went wrong installing Express." 0.02
       return 1
     fi
     
@@ -151,7 +151,7 @@ EOF
   else
     rainbow_box "✅ Node.js project created successfully!"
   fi
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

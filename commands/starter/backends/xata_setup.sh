@@ -9,7 +9,7 @@ setup_xata() {
   
   # Navigate to project directory
   cd "$project_path" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -31,7 +31,7 @@ setup_xata() {
     npm install -g @xata.io/cli@latest > /dev/null 2>&1
     
     if [ $? -ne 0 ]; then
-      typewriter "$(random_fail) Failed to install Xata CLI." 0.02
+      typewriter "$(display_error "$THEME") Failed to install Xata CLI." 0.02
       typewriter "Try running: npm install -g @xata.io/cli@latest" 0.02
       return 1
     fi
@@ -44,7 +44,7 @@ setup_xata() {
   
   read -p "Enter your Xata API key: " xata_api_key
   if [ -z "$xata_api_key" ]; then
-    typewriter "$(random_fail) Xata API key cannot be empty." 0.02
+    typewriter "$(display_error "$THEME") Xata API key cannot be empty." 0.02
     return 1
   fi
   
@@ -53,7 +53,7 @@ setup_xata() {
     typewriter "⚠️ Warning: The API key format doesn't look valid. API keys are typically 20+ characters." 0.02
     read -p "Continue anyway? (y/n): " confirm
     if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
-      typewriter "$(random_fail) Setup aborted." 0.02
+      typewriter "$(display_error "$THEME") Setup aborted." 0.02
       return 1
     fi
   fi
@@ -61,7 +61,7 @@ setup_xata() {
   # Prompt for Xata workspace slug
   read -p "Enter your Xata workspace slug (found in Xata settings): " xata_workspace_slug
   if [ -z "$xata_workspace_slug" ]; then
-    typewriter "$(random_fail) Xata workspace slug cannot be empty." 0.02
+    typewriter "$(display_error "$THEME") Xata workspace slug cannot be empty." 0.02
     return 1
   fi
   
@@ -87,7 +87,7 @@ setup_xata() {
   XATA_API_KEY=$xata_api_key xata auth login > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to authenticate with Xata." 0.02
+    typewriter "$(display_error "$THEME") Failed to authenticate with Xata." 0.02
     return 1
   fi
   
@@ -98,7 +98,7 @@ setup_xata() {
   xata dbs create "$db_name" --workspace "$xata_workspace_slug" > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to create Xata database." 0.02
+    typewriter "$(display_error "$THEME") Failed to create Xata database." 0.02
     typewriter "The database name might already be taken or you don't have sufficient permissions." 0.02
     return 1
   fi
@@ -109,7 +109,7 @@ setup_xata() {
   if [[ "$create_schema" =~ ^[Yy]$ ]]; then
     # Create temporary schema file with a more secure pattern and cleanup trap
     local schema_file=$(mktemp -t "xata_schema_XXXXXX") || { 
-      echo "$(random_fail) Failed to create temporary file." 
+      echo "$(display_error "$THEME") Failed to create temporary file." 
       return 1
     }
     
@@ -158,7 +158,7 @@ EOF
     xata schema upload "$schema_file" --db="https://${xata_workspace_slug}.xata.sh/db/${db_name}" > /dev/null 2>&1
     
     if [ $? -ne 0 ]; then
-      typewriter "$(random_fail) Failed to upload schema." 0.02
+      typewriter "$(display_error "$THEME") Failed to upload schema." 0.02
       rm "$schema_file"
       return 1
     fi
@@ -170,7 +170,7 @@ EOF
     xata random-data --table=items --records=10 --db="https://${xata_workspace_slug}.xata.sh/db/${db_name}" > /dev/null 2>&1
     
     if [ $? -ne 0 ]; then
-      typewriter "$(random_fail) Failed to insert sample data." 0.02
+      typewriter "$(display_error "$THEME") Failed to insert sample data." 0.02
     fi
   fi
   
@@ -201,7 +201,7 @@ EOF
   xata init --db="https://${xata_workspace_slug}.xata.sh/db/${db_name}" --sdk --no-input --yes --codegen="$codegen_path" > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to initialize Xata in your project." 0.02
+    typewriter "$(display_error "$THEME") Failed to initialize Xata in your project." 0.02
     return 1
   fi
   
@@ -210,7 +210,7 @@ EOF
   xata codegen > /dev/null 2>&1
   
   if [ $? -ne 0 ]; then
-    typewriter "$(random_fail) Failed to generate code from schema." 0.02
+    typewriter "$(display_error "$THEME") Failed to generate code from schema." 0.02
     return 1
   fi
   
@@ -482,7 +482,7 @@ EOF
       if [ -f "src/routes/+layout.svelte" ]; then
         # Use a more secure temporary file pattern
         local temp_file=$(mktemp -t "xata_layout_XXXXXX") || {
-          echo "$(random_fail) Failed to create temporary file."
+          echo "$(display_error "$THEME") Failed to create temporary file."
           return 1
         }
         
@@ -860,7 +860,7 @@ EOF
       if [ -f "index.js" ]; then
         # Use a more secure temporary file pattern
         local temp_file=$(mktemp -t "xata_index_XXXXXX") || {
-          echo "$(random_fail) Failed to create temporary file."
+          echo "$(display_error "$THEME") Failed to create temporary file."
           return 1
         }
         
@@ -1314,7 +1314,7 @@ EOF
         if ! grep -q "xata-demo.html" "index.html"; then
           # Create a temporary file with a more secure pattern
           local temp_file=$(mktemp -t "xata_html_XXXXXX") || {
-            echo "$(random_fail) Failed to create temporary file."
+            echo "$(display_error "$THEME") Failed to create temporary file."
             return 1
           }
           
@@ -1385,7 +1385,7 @@ EOF
   rainbow_box "✅ Xata set up successfully!"
   typewriter "🔐 NOTE: Your Xata database is now set up and ready to use!" 0.02
   typewriter "Visit https://app.xata.io to view your database in the Xata dashboard." 0.02
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

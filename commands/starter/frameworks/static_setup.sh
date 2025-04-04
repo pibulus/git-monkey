@@ -14,14 +14,14 @@ setup_static() {
   
   # Navigate to parent directory
   cd "$(dirname "$project_path")" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
   # Create project directory
   mkdir -p "$project_name"
   cd "$project_name" || {
-    echo "$(random_fail)"
+    echo "$(display_error "$THEME")"
     return 1
   }
   
@@ -263,7 +263,7 @@ EOF
   
   # Success message
   rainbow_box "✅ Static site project created successfully!"
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   
   return 0
 }

@@ -1,16 +1,22 @@
 #!/bin/bash
 
 # ========= GIT MONKEY WORKTREE ADD COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Creates a new worktree for a branch
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # Check if tone variables are already set (passed from parent script)
 if [ -z "$TONE_STAGE" ] || [ -z "$THEME" ] || [ -z "$IDENTITY" ]; then
   # If not set, load them directly
-  source ./utils/profile.sh
-  source ./utils/identity.sh
   
   # Get current tone stage and identity for context-aware help
   TONE_STAGE=$(get_tone_stage)
@@ -112,7 +118,7 @@ record_worktree() {
 }
 
 # Function to get a random success message
-random_success_message() {
+display_success "$THEME"_message() {
   local messages=(
     "🐒 New dimension unlocked! Now you can work on multiple branches at once."
     "🌴 Your new branch tree is ready for climbing!"
@@ -187,7 +193,7 @@ main() {
     # Beginners get colorful, detailed success
     rainbow_box "$success_emoji Worktree Created!"
     echo ""
-    typewriter "$(random_success_message)" 0.01
+    typewriter "$(display_success "$THEME"_message)" 0.01
     echo ""
     echo "📁 Location: $worktree_path"
     echo "🌿 Branch: $branch_name"
@@ -199,7 +205,7 @@ main() {
     # Intermediate users get standard output
     rainbow_box "$success_emoji Worktree Created!"
     echo ""
-    echo "$(random_success_message)"
+    echo "$(display_success "$THEME"_message)"
     echo ""
     echo "📁 Location: $worktree_path"
     echo "🌿 Branch: $branch_name"

@@ -1,10 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY WORKTREE REMOVE COMMAND =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Removes a worktree safely with checks for unsaved work
 
-source ./utils/style.sh
-source ./utils/config.sh
 
 # Default worktree prefix (should match the one in worktree.sh)
 WORKTREE_PREFIX="gm-"

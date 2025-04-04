@@ -2,8 +2,16 @@
 
 # ========= GIT MONKEY PROJECT STARTER =========
 
-source ./utils/style.sh
-source ./utils/config.sh
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
+
 source ./commands/starter/starter_config.sh
 
 # Source all modules
@@ -21,7 +29,7 @@ source ./commands/starter/backends/xata_setup.sh
 source ./commands/starter/extras/eslint_prettier_setup.sh
 source ./commands/starter/extras/github_setup.sh
 
-say_hi
+display_splash "$THEME"
 ascii_spell "Create a new project with Soft Stack magic"
 
 # Function to parse command-line arguments
@@ -464,7 +472,7 @@ finalize_project() {
   fi
   
   echo ""
-  echo "$(random_success)"
+  echo "$(display_success "$THEME")"
   echo ""
 }
 

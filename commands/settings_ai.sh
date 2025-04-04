@@ -1,11 +1,18 @@
 #!/bin/bash
 
 # ========= GIT MONKEY AI SETTINGS MANAGER =========
+
+
+# Load required utilities
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
+
+
 # Configure AI providers and manage API keys
 
-source ./utils/style.sh
-source ./utils/config.sh
-source ./utils/ai_keys.sh
 
 # Get theme for styling
 THEME=$(get_selected_theme 2>/dev/null || echo "jungle")
@@ -411,7 +418,6 @@ test_ai_integration() {
   echo ""
   
   # Make the request
-  source ./utils/ai_request.sh
   local response=$(ai_request "$test_prompt" "$provider" false)
   local status=$?
   
