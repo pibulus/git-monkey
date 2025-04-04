@@ -1,0 +1,12 @@
+USAGE:
+  gitmonkey welcome [--skip-intro] [--reset]
+
+OPTIONS:
+  --skip-intro    Bypass animations and welcome sequence
+  --reset         Force welcome screen to display regardless of previous runs
+
+The welcome command initializes or reinitializes the onboarding experience.
+It creates configuration in ~/.gitmonkey/ for identity, theme and tone preferences.
+
+Automatically executes on first run. Can be manually triggered to reset preferences
+or redisplay the guided tour. Returns immediately if a subcommand is specified.

@@ -1,194 +1,139 @@
-# 🐒 Git Monkey – Guiding Principles for a Friendlier Git CLI
+# Git Monkey: Core Principles & Philosophy
 
-## 🔮 Core Philosophy
+> "Git doesn't have to be scary. Terminal doesn't have to be cold. Let's make this fun." 
 
-Git Monkey exists to make Git feel human, helpful, and forgiving—not hostile, cryptic, or arcane. It's not just a tool; it's a translator, a guide, and a companion. Every command, prompt, and error response should reflect this ethos.
+## Our Vision
 
-Git Monkey meets users where they are—whether they're taking their first steps or merging like a wizard.
+Git Monkey exists to make Git and terminal workflows delightful, friendly, and naturally educational. We believe that command line tools can be both powerful AND accessible - it's not a binary choice.
 
----
+We're here to dismantle the false notion that Git is complex or that terminal tools are only for "serious programmers." **Anyone can thrive in the terminal** with the right guide.
 
-## 🧠 Smart Contextual Help & Autoresponse
+## Core Principles
 
-### 🧩 Problem:
-Git throws dense, intimidating errors for common situations—missing upstreams, dirty trees, detached HEADs, diverged branches. Most users either:
-- Don't understand the error
-- Have to Google the solution (and hope the advice isn't outdated)
-- Or make a mess trying to guess a fix
+### 1. Show, Don't Tell
 
-### 🐵 Git Monkey Solution:
-Whenever a **known friction point** is encountered:
+**Instead of explaining that terminal is faster, DEMONSTRATE it:**
+- Show operation timing ("Done in 0.3s!")
+- Highlight keystroke efficiency
+- Celebrate small wins to build confidence
+- Create "aha!" moments that stick
 
-**[Step 1] Detect the Context**  
-What is the user trying to do?  
-What is Git confused or upset about?
+### 2. Progressive Disclosure
 
-**[Step 2] Explain It Clearly**  
-Use plain, emotionally intelligent language. Reframe fear into clarity.
+**Meet users where they are:**
+- New users get friendly, detailed guidance
+- Experts get concise, efficient interactions 
+- Intermediate users get a balanced approach
+- Everyone sees the *same functionality* but presented differently
 
-Example:  
-"🐒 Looks like this branch hasn't been pushed before. That's why Git is panicking.  
-Want me to link it to origin/your-branch and push it for you?"
+### 3. Friendly Doesn't Mean Childish
 
-**[Step 3] Offer a Smart Fix**  
-- Present a safe Y/n prompt (default yes).
-- Allow power users to bypass with `--yes` or `--auto`.
-- Show the command that will be run (educational & reassuring).
-- Allow user to copy it instead of running if they choose.
+**Be approachable without being condescending:**
+- Use playful language that respects intelligence
+- Celebrate milestones without infantilizing
+- Balance fun elements with practical education
+- Keep the cute stuff optional (and theme-dependent)
 
-**[Step 4] Execute and Confirm**  
-- Run the fix safely with progress feedback.
-- Confirm success with delight.
+### 4. Teach Through Doing
 
-Example:  
-✅ "All done! Your branch now tracks origin/your-branch. Pushed successfully."
+**Embed learning in regular workflows:**
+- Introduce concepts in context when they're relevant
+- Provide micro-learning moments during normal operations
+- Solve real problems first, then explain what happened
+- Build muscle memory through repetition, not memorization
 
----
+### 5. Embrace Multiple Learning Styles
 
-## 🏗️ Pattern Template (internal rule)
+**Visual, verbal and experiential learners all welcome:**
+- Use ASCII art to illustrate concepts
+- Provide practical metaphors that build mental models
+- Allow exploration through low-risk commands
+- Support different workflows and preferences
 
-1. Detect issue  
-2. Friendly message:  
-   "🐒 Looks like you're in [context]. Here's what that means..."
-3. Offer fix:  
-   "Want me to [solution]? (Y/n)"
-4. If yes, run fix and show confirmation.
-5. Optional: --yes / --auto to skip prompt
-6. Optional: --explain for deeper learning mode
+### 6. Fail Gracefully & Constructively
 
----
+**When things go wrong, make it a teaching moment:**
+- Explain errors in plain language
+- Suggest specific corrections
+- Prevent catastrophic mistakes
+- Show recovery paths, not dead-ends
 
-## 🔁 Common Git Friction Points to Handle This Way
+### 7. Bridge to Broader Ecosystems 
 
-- `git push` with no upstream ➜ Offer `--set-upstream`
-- Switching branches with uncommitted changes ➜ Offer to `stash`, `apply`, or use a `worktree`
-- Detached HEAD ➜ Explain clearly, offer to reattach or create a new branch
-- Diverged branches ➜ Offer safe `rebase`, `merge`, or open diff viewer
-- Missing remotes ➜ Offer to add one from GitHub/GitLab origin
-- Submodule errors ➜ Offer to run `git submodule update --init`
-- Rebase conflict ➜ Show resolution steps with calm, friendly walkthrough
-- `git clean` ➜ Warn before destructive actions, explain impact
-- Stuck merges ➜ Detect and guide users step by step
+**Terminal doesn't exist in isolation:**
+- Integrate smoothly with editors (VSCode, etc.)
+- Handle project setup realities (npm, node_modules, etc.)
+- Support modern workflows (env files, package managers)
+- Acknowledge different platforms (macOS, Windows, Linux)
 
----
+### 8. Beyond Engineers
 
-## ✨ Enhancements
+**Git belongs to everyone on the team:**
+- Designers should feel comfortable with version control
+- Product managers should be able to check status 
+- Writers should be able to track document versions
+- New team members should onboard faster
 
-- Contextual aliases based on tone_stage (e.g., suggest "merge-magic" alias after 10 merges)
-- `--explain` flag to temporarily turn on learning mode: show what's happening under the hood
-- `--show-command` flag to output only the actual Git command being run
-- `--why` flag for nerds who want to know why Git is throwing that error
+## Implementation Guidelines
 
----
+### Language & Tone
 
-## 🌿 Progressive Disclosure
+- **Beginners (Tone Stage 0-2):** Conversational, encouraging, identity-aware
+   ```
+   "Hey Jesse! You just created your first branch! Here's what you can do next..."
+   ```
 
-When implementing Git Monkey commands, follow these principles of progressive disclosure:
+- **Intermediate (Tone Stage 3):** Practical, clear, conversational
+   ```
+   "Branch created successfully. You can push it with: gitmonkey push"
+   ```
 
-1. **Start Simple, Reveal Complexity Gradually**
-   - First exposure: Show only what's necessary
-   - Subsequent uses: Introduce more advanced options
-   - Power users: Provide shortcuts and advanced flags
+- **Advanced (Tone Stage 4-5):** Concise, efficient, to-the-point
+   ```
+   "branch 'feature' created. push: gitmonkey push"
+   ```
 
-2. **Three Levels of Detail**
-   - Basic: Essential information with clear next steps
-   - Standard: More context and options
-   - Advanced: Complete details for power users with `--verbose` flag
+### Visual Engagement
 
-3. **Remember User Progress**
-   - Track command usage frequency
-   - Adjust verbosity based on experience
-   - Offer more advanced tips as users grow
+- Use ASCII art diagrams for concepts (branches, commits)
+- Apply consistent theme styling throughout the experience
+- Employ color and formatting to draw attention to important elements
+- Use progress indicators for longer operations
 
-Example progression:
-```
-# First-time user
-🐒 Created worktree for 'feature-branch'
+### Micro-Learning Moments
 
-# A few uses later
-🐒 Created worktree for 'feature-branch'
-💡 Tip: Use 'gitmonkey worktree:switch feature-branch' to jump to it
+Identify common workflows where we can insert educational elements:
 
-# Power user
-🐒 Created worktree for 'feature-branch'
-💡 Pro tip: You can use '-y' flag to skip confirmations
-```
+- After merge conflicts: brief explanation of what happened
+- When creating first branch: 30-second explanation of branching model
+- After 10 successful commits: celebrate and explain best practices
+- When encountering common errors: explain what went wrong and why
 
----
+### Metaphors That Work
 
-## 🎨 Design Language & Tone
+Choose consistent, intuitive metaphors to explain Git concepts:
 
-### Emojis as Intuitive Signifiers
+- **Time travel** metaphor for history-related operations
+- **Parallel universes** metaphor for branches
+- **Saving your game** metaphor for commits
+- **Shipping packages** metaphor for pushing/pulling
 
-- 🐒 = Git Monkey speaking/explaining
-- ✅ = Success confirmation
-- ❌ = Error that needs attention
-- 💡 = Tip or educational information
-- ⚠️ = Warning about potential issues
-- 🔄 = Process in progress
-- 🎉 = Celebration of completion
-- 🧠 = Learning moment
-- 🔍 = Searching or investigation
+### Technical Implementation
 
-### Voice & Tone Principles
+- Use tone stage detection for progressive disclosure
+- Theme-aware styling with consistent emoji systems
+- Time tracking for performance-focused feedback
+- Command usage tracking to celebrate milestones
 
-1. **Friendly but Professional**
-   - Conversational but not overly casual
-   - Respectful of user's time and intelligence
-   - No excessive jokes that might frustrate in serious situations
+## Collaborative Spirit
 
-2. **Calm During Crises**
-   - More serious tone when handling potential data loss
-   - Clear, step-by-step guidance during complex operations
-   - Reassuring without minimizing legitimate concerns
+Git Monkey is built collaboratively, and we welcome contributors who share our vision of making Git accessible to everyone. We value:
 
-3. **Encouraging Learning**
-   - Frame mistakes as learning opportunities
-   - Provide educational content contextually
-   - Celebrate progress and skill development
-
-4. **Cultural Sensitivity**
-   - Avoid idioms that may not translate globally
-   - Use inclusive language
-   - Focus on universal experiences of coding joy and frustration
+- **Inclusivity:** Making tools that work for all experience levels
+- **Creativity:** Finding fun ways to explain complex concepts
+- **Practicality:** Solving real problems people face with Git
+- **Empathy:** Understanding user frustrations and addressing them
 
 ---
 
-## 🛠️ Implementation Guidelines
-
-### Command Structure
-
-All Git Monkey commands should follow a consistent structure:
-
-1. **Help/Usage First**
-   - If no arguments or `--help`, display usage information
-   - Include examples for common use cases
-
-2. **Validate Environment**
-   - Check if in Git repository
-   - Verify required dependencies
-   - Validate arguments
-
-3. **Smart Default Behavior**
-   - Choose sensible defaults that work in most cases
-   - Make destructive operations opt-in, not opt-out
-
-4. **Consistent Flag Patterns**
-   - `--yes/-y` for auto-confirming prompts
-   - `--force/-f` for overriding safety checks
-   - `--verbose/-v` for additional information
-   - `--quiet/-q` for minimal output
-
-5. **Exit Codes & Error Handling**
-   - Use standard exit codes consistently
-   - Always handle errors gracefully with helpful messages
-   - Provide recovery suggestions for common errors
-
----
-
-## 🌱 Ultimate Goal
-
-Every time a user hits a wall, Git Monkey builds a bridge—
-With clarity, safety, charm, and a hint of monkey magic.
-
-If Git is a jungle, Git Monkey is your machete, your guide, and your best friend in a little explorer hat.
+Like Git itself, this document is a living entity. Suggestions, discussion, and contributions are not just welcome – they're essential to making Git Monkey better for everyone!

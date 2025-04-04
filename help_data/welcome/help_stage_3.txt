@@ -1,0 +1,24 @@
+USAGE:
+  gitmonkey welcome [options]
+
+Launches the Git Monkey welcome and onboarding experience, which introduces
+core features, helps select a theme, and guides through initial setup.
+
+OPTIONS:
+  --skip-intro    Skip animations and extended introduction
+  --reset         Force welcome screen to appear even if previously shown
+
+DETAILS:
+The welcome command provides an interactive onboarding experience for new users
+and can be run any time to reacquaint yourself with Git Monkey's features.
+It creates a .gitmonkey directory in your home folder to store preferences.
+
+The command performs these key functions:
+- Personalizes the experience by requesting your name
+- Offers theme selection (jungle, hacker, wizard, cosmic)
+- Provides a tour of key Git Monkey features
+- Suggests first commands to try
+
+EXAMPLES:
+  gitmonkey welcome              # Run the full welcome experience
+  gitmonkey welcome --skip-intro # Skip animations for faster onboarding

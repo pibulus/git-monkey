@@ -6,13 +6,89 @@
 source ./utils/style.sh
 source ./utils/config.sh
 
+# Check if tone variables are already set (passed from parent script)
+if [ -z "$TONE_STAGE" ] || [ -z "$THEME" ] || [ -z "$IDENTITY" ]; then
+  # If not set, load them directly
+  source ./utils/profile.sh
+  source ./utils/identity.sh
+  
+  # Get current tone stage and identity for context-aware help
+  TONE_STAGE=$(get_tone_stage)
+  THEME=$(get_selected_theme)
+  IDENTITY=$(get_full_identity)
+fi
+
+# Get theme-specific emoji
+get_theme_emoji() {
+  local emoji_type="$1"  # Can be "info", "success", "error", "warning"
+  
+  case "$THEME" in
+    "jungle")
+      case "$emoji_type" in
+        "info") echo "🐒" ;;
+        "success") echo "🍌" ;;
+        "error") echo "🙈" ;;
+        "warning") echo "🙊" ;;
+        *) echo "🐒" ;;
+      esac
+      ;;
+    "hacker")
+      case "$emoji_type" in
+        "info") echo ">" ;;
+        "success") echo "[OK]" ;;
+        "error") echo "[ERROR]" ;;
+        "warning") echo "[WARNING]" ;;
+        *) echo ">" ;;
+      esac
+      ;;
+    "wizard")
+      case "$emoji_type" in
+        "info") echo "✨" ;;
+        "success") echo "🧙" ;;
+        "error") echo "⚠️" ;;
+        "warning") echo "📜" ;;
+        *) echo "✨" ;;
+      esac
+      ;;
+    "cosmic")
+      case "$emoji_type" in
+        "info") echo "🚀" ;;
+        "success") echo "🌠" ;;
+        "error") echo "☄️" ;;
+        "warning") echo "🌌" ;;
+        *) echo "🚀" ;;
+      esac
+      ;;
+    *)
+      case "$emoji_type" in
+        "info") echo "🐒" ;;
+        "success") echo "✅" ;;
+        "error") echo "❌" ;;
+        "warning") echo "⚠️" ;;
+        *) echo "🐒" ;;
+      esac
+      ;;
+  esac
+}
+
+# Get theme-specific emojis
+info_emoji=$(get_theme_emoji "info")
+success_emoji=$(get_theme_emoji "success")
+error_emoji=$(get_theme_emoji "error")
+warning_emoji=$(get_theme_emoji "warning")
+
 # Default worktree prefix (should match the one in worktree.sh)
 WORKTREE_PREFIX="gm-"
 WORKTREE_STATE_FILE="$HOME/.gitmonkey/worktrees.json"
 
 # Function to handle errors with friendly messages
 handle_error() {
-  echo "❌ $1"
+  # Tone-appropriate error message
+  if [ "$TONE_STAGE" -le 2 ]; then
+    echo "$error_emoji Oops, $IDENTITY! $1"
+  else
+    echo "$error_emoji $1"
+  fi
   exit 1
 }
 
@@ -106,17 +182,38 @@ main() {
   # Record the worktree in our state file
   record_worktree "$branch_name" "$worktree_path"
   
-  # Success message
-  rainbow_box "✅ Worktree Created!"
-  echo ""
-  typewriter "$(random_success_message)" 0.01
-  echo ""
-  echo "📁 Location: $worktree_path"
-  echo "🌿 Branch: $branch_name"
-  echo ""
-  echo "To switch to this worktree, run:"
-  echo "  gitmonkey worktree:switch $branch_name"
-  echo ""
+  # Success message with tone-appropriate styling
+  if [ "$TONE_STAGE" -le 2 ]; then
+    # Beginners get colorful, detailed success
+    rainbow_box "$success_emoji Worktree Created!"
+    echo ""
+    typewriter "$(random_success_message)" 0.01
+    echo ""
+    echo "📁 Location: $worktree_path"
+    echo "🌿 Branch: $branch_name"
+    echo ""
+    echo "Great job, $IDENTITY! To switch to this worktree, run:"
+    echo "  gitmonkey worktree:switch $branch_name"
+    echo ""
+  elif [ "$TONE_STAGE" -le 3 ]; then
+    # Intermediate users get standard output
+    rainbow_box "$success_emoji Worktree Created!"
+    echo ""
+    echo "$(random_success_message)"
+    echo ""
+    echo "📁 Location: $worktree_path"
+    echo "🌿 Branch: $branch_name"
+    echo ""
+    echo "To switch to this worktree:"
+    echo "  gitmonkey worktree:switch $branch_name"
+    echo ""
+  else
+    # Expert users get minimal output
+    echo "$success_emoji Worktree created for '$branch_name'"
+    echo "📁 $worktree_path"
+    echo "Switch: worktree:switch $branch_name"
+    echo ""
+  fi
 }
 
 # Execute main function with args

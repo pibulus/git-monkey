@@ -1,0 +1,19 @@
+WHAT YOU NEED TO KNOW:
+The `welcome` command gives you a friendly introduction to Git Monkey! It's like meeting a new friend who will help you learn to code.
+
+BASIC USAGE:
+  gitmonkey welcome
+
+This command will:
+- Show you what Git Monkey can do
+- Let you pick a fun theme that matches your style
+- Help you get started with your first commands
+- Explain things in a way that's easy to understand
+
+TIP: If you ever feel lost or want to see the introduction again, just type `gitmonkey welcome` and it will start over!
+
+EXAMPLES:
+  gitmonkey welcome              # Start the welcome experience from the beginning
+  gitmonkey welcome --skip-intro # Skip the animations and get straight to the content
+
+NOTE: The welcome experience automatically runs the first time you use Git Monkey, but you can run it again anytime you want a refresher!

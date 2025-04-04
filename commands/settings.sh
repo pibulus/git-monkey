@@ -22,6 +22,7 @@ options=(
   "Toggle ASCII art" 
   "Toggle colors" 
   "Change verbosity level" 
+  "Configure AI features"
   "Reset to defaults"
   "Return to menu"
 )
@@ -76,6 +77,12 @@ select opt in "${options[@]}"; do
             break
             ;;
         5)
+            # Launch AI settings menu
+            echo "Launching AI settings..."
+            source ./commands/settings_ai.sh
+            break
+            ;;
+        6)
             # Reset to defaults
             update_setting animations true
             update_setting ascii true
@@ -84,7 +91,7 @@ select opt in "${options[@]}"; do
             rainbow_box "✅ Settings reset to defaults"
             break
             ;;
-        6)
+        7)
             echo "Returning to menu..."
             break
             ;;

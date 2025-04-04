@@ -101,24 +101,86 @@ main() {
   # If no command specified, show list of available topics
   if [ -z "$command" ]; then
     echo ""
-    box "🐒 Git Monkey Help"
+    
+    # Get theme-specific header styling
+    local header_icon=""
+    case "$theme" in
+      "jungle")
+        header_icon="🐒"
+        ;;
+      "hacker")
+        header_icon=">"
+        ;;
+      "wizard")
+        header_icon="✨"
+        ;;
+      "cosmic")
+        header_icon="🚀"
+        ;;
+      *)
+        header_icon="🐒"
+        ;;
+    esac
+    
+    box "$header_icon Git Monkey Help"
     echo ""
-    list_help_topics "$theme"
+    list_help_topics "$theme" "$tone_stage"
     return 0
   fi
   
   # Check if help topic exists
   if ! help_topic_exists "$command"; then
-    echo "❌ No help available for '$command'."
+    # Get theme-specific error styling
+    local error_icon=""
+    case "$theme" in
+      "jungle")
+        error_icon="🙈"
+        ;;
+      "hacker")
+        error_icon="[ERROR]"
+        ;;
+      "wizard")
+        error_icon="⚠️"
+        ;;
+      "cosmic")
+        error_icon="☄️"
+        ;;
+      *)
+        error_icon="❌"
+        ;;
+    esac
+    
+    echo -e "$error_icon \033[1;31mNo help available for '$command'.\033[0m"
     echo ""
-    echo "Available help topics:"
-    list_help_topics "$theme"
+    echo -e "\033[1mAvailable help topics:\033[0m"
+    list_help_topics "$theme" "$tone_stage"
     return 1
   fi
   
   # Display help content
   echo ""
-  box "🐒 Git Monkey Help: $command"
+  
+  # Get theme-specific header styling
+  local header_icon=""
+  case "$theme" in
+    "jungle")
+      header_icon="🐒"
+      ;;
+    "hacker")
+      header_icon=">"
+      ;;
+    "wizard")
+      header_icon="✨"
+      ;;
+    "cosmic")
+      header_icon="🚀"
+      ;;
+    *)
+      header_icon="🐒"
+      ;;
+  esac
+  
+  box "$header_icon Git Monkey Help: $command"
   echo ""
   get_help_content "$command" "$tone_stage" "$theme" "$show_all"
   echo ""

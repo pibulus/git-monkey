@@ -9,6 +9,78 @@ source "$(dirname "${BASH_SOURCE[0]}")/profile.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/titles.sh"
 source "$(dirname "${BASH_SOURCE[0]}")/identity.sh"
 
+# Function to increment command usage and potentially advance tone stage
+increment_command_usage() {
+  local command="$1"
+  
+  # Get current profile data
+  local profile_data=$(get_profile_data)
+  local current_stage=$(get_tone_stage)
+  local command_count=$(echo "$profile_data" | jq -r ".command_usage.total // 0")
+  local command_variety=$(echo "$profile_data" | jq -r ".command_usage | keys | length")
+  
+  # Increment the command usage
+  if [[ $(echo "$profile_data" | jq -r ".command_usage.\"$command\" // 0") -eq 0 ]]; then
+    # First time using this command
+    profile_data=$(echo "$profile_data" | jq ".command_usage.\"$command\" = 1")
+  else
+    # Increment existing command count
+    profile_data=$(echo "$profile_data" | jq ".command_usage.\"$command\" = (.command_usage.\"$command\" // 0) + 1")
+  fi
+  
+  # Increment total command count
+  profile_data=$(echo "$profile_data" | jq ".command_usage.total = (.command_usage.total // 0) + 1")
+  
+  # Update profile data
+  save_profile_data "$profile_data"
+  
+  # Check if tone stage should advance
+  calculate_and_update_tone_stage
+  
+  # Get new tone stage
+  local new_stage=$(get_tone_stage)
+  
+  # If tone stage advanced, show notification
+  if [ "$new_stage" -gt "$current_stage" ]; then
+    local new_title=$(get_monkey_title "$new_stage" "$(get_selected_theme)")
+    
+    # Theme-specific advancement messages
+    local theme=$(get_selected_theme)
+    local identity=$(get_full_identity)
+    local advance_emoji="🎉"
+    local advance_message="You've advanced to a new tone stage!"
+    
+    case "$theme" in
+      "jungle")
+        advance_emoji="🐒"
+        advance_message="You've swung up to a new tone stage!"
+        ;;
+      "hacker")
+        advance_emoji=">"
+        advance_message="LEVEL UP: Tone stage advanced."
+        ;;
+      "wizard")
+        advance_emoji="✨"
+        advance_message="Your magical git powers have grown to a new tone stage!"
+        ;;
+      "cosmic")
+        advance_emoji="🚀"
+        advance_message="You've blasted off to a new tone stage!"
+        ;;
+    esac
+    
+    echo ""
+    echo "$advance_emoji $advance_message"
+    
+    if [ "$new_stage" -le 3 ]; then
+      echo "Congratulations, $identity! You are now a \"$new_title\"."
+    else
+      echo "You are now a \"$new_title\"."
+    fi
+    echo ""
+  fi
+}
+
 # Function to execute a command and track its usage
 execute_command() {
   local cmd="$1"

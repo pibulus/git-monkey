@@ -8,6 +8,7 @@ source ./commands/starter/starter_config.sh
 
 # Source all modules
 source ./commands/starter/frameworks/svelte_setup.sh
+source ./commands/starter/frameworks/svelte_modern.sh
 source ./commands/starter/frameworks/node_setup.sh
 source ./commands/starter/frameworks/static_setup.sh
 source ./commands/starter/ui/tailwind_setup.sh
@@ -101,13 +102,14 @@ choose_framework() {
     echo ""
     box "Choose a Framework"
     PS3=$'\nSelect a framework type: '
-    options=("SvelteKit (modern web apps)" "Node.js (backend/CLI)" "Static Site (HTML/CSS/JS)")
+    options=("SvelteKit (standard)" "SvelteKit (modern w/ server actions)" "Node.js (backend/CLI)" "Static Site (HTML/CSS/JS)")
     select opt in "${options[@]}"; do
       case $REPLY in
         1) FRAMEWORK_TYPE="svelte"; break ;;
-        2) FRAMEWORK_TYPE="node"; break ;;
-        3) FRAMEWORK_TYPE="static"; break ;;
-        *) echo "Please enter a valid option (1-3)." ;;
+        2) FRAMEWORK_TYPE="svelte-modern"; break ;;
+        3) FRAMEWORK_TYPE="node"; break ;;
+        4) FRAMEWORK_TYPE="static"; break ;;
+        *) echo "Please enter a valid option (1-4)." ;;
       esac
     done
   fi
@@ -257,6 +259,14 @@ create_project() {
       typewriter "🚀 Creating SvelteKit project..." 0.02
       setup_sveltekit "$PROJECT_NAME" "$PROJECT_PATH" || {
         echo "❌ Failed to set up SvelteKit project."
+        exit 1
+      }
+      ;;
+    svelte-modern)
+      echo ""
+      typewriter "🚀 Creating Modern SvelteKit project with server actions..." 0.02
+      setup_modern_sveltekit "$PROJECT_NAME" "$PROJECT_PATH" || {
+        echo "❌ Failed to set up Modern SvelteKit project."
         exit 1
       }
       ;;
