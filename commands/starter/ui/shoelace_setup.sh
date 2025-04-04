@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= SHOELACE SETUP MODULE =========
 # Sets up Shoelace Web Components
 
@@ -251,6 +255,8 @@ function copyDir(src, dest) {
 // Execute the copy
 try {
   copyDir(sourcePath, destPath);
+# Get current theme
+THEME=$(get_selected_theme)
   console.log('✅ Shoelace assets copied successfully');
 } catch (err) {
   console.error('❌ Error copying Shoelace assets:', err);

@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= GITHUB SETUP MODULE =========
 # Sets up a GitHub repository for a project
 
@@ -110,6 +114,8 @@ EOF
     gh repo create "$project_name" --private --source=. --remote=origin
   else
     gh repo create "$project_name" --public --source=. --remote=origin
+# Get current theme
+THEME=$(get_selected_theme)
   fi
   
   if [ $? -ne 0 ]; then

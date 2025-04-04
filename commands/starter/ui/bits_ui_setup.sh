@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= BITS UI SETUP MODULE =========
 # Sets up Bits UI (shadcn-svelte) with Tailwind CSS for SvelteKit
 # Bits UI is a collection of accessible, customizable components 

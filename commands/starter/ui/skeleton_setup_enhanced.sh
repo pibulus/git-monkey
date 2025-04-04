@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= SKELETON UI ENHANCED SETUP MODULE =========
 # Sets up Skeleton UI with Tailwind CSS for SvelteKit
 # Enhanced with form patterns, data tables, and advanced customization

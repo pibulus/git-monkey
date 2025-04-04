@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= DESIGN TOKENS SETUP MODULE =========
 # Sets up a design tokens system for customizable UI themes
 # Works with multiple UI libraries (Skeleton, Bits UI, etc.)

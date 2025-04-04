@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= GIT MONKEY STARTER CONFIG =========
 # Shared configuration for the project starter wizard
 
@@ -82,6 +86,8 @@ load_preset() {
   fi
   
   source "$preset_file"
+# Get current theme
+THEME=$(get_selected_theme)
   echo "✅ Loaded preset: $preset_name"
   return 0
 }

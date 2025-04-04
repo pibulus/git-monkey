@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= SUPABASE SETUP MODULE =========
 # Sets up Supabase in a project
 
@@ -22,6 +26,8 @@ setup_supabase() {
   
   # Friendly intro
   typewriter "🔌 Setting up Supabase - open source Firebase alternative" 0.02
+# Get current theme
+THEME=$(get_selected_theme)
   typewriter "💡 This will add authentication, database, and storage capabilities" 0.02
   echo ""
   

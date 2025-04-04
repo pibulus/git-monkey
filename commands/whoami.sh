@@ -9,6 +9,8 @@ PARENT_DIR="$(dirname "$DIR")"
 source "$PARENT_DIR/utils/style.sh"
 source "$PARENT_DIR/utils/config.sh"
 source "$PARENT_DIR/utils/ascii_art.sh"
+# Get current theme
+THEME=$(get_selected_theme)
 
 
 # Shows your current Git context in a monkey-friendly way

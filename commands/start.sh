@@ -28,6 +28,8 @@ source ./commands/starter/backends/supabase_setup.sh
 source ./commands/starter/backends/xata_setup.sh
 source ./commands/starter/extras/eslint_prettier_setup.sh
 source ./commands/starter/extras/github_setup.sh
+# Get current theme
+THEME=$(get_selected_theme)
 
 display_splash "$THEME"
 ascii_spell "Create a new project with Soft Stack magic"

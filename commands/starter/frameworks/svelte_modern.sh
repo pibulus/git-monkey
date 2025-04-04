@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= MODERN SVELTEKIT SETUP MODULE =========
 # Sets up a new SvelteKit project with modern patterns:
 # - Server Actions

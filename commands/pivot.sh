@@ -9,6 +9,8 @@ PARENT_DIR="$(dirname "$DIR")"
 source "$PARENT_DIR/utils/style.sh"
 source "$PARENT_DIR/utils/config.sh"
 source "$PARENT_DIR/utils/ascii_art.sh"
+# Get current theme
+THEME=$(get_selected_theme)
 
 
 # Quickly switch context by stashing current work and creating/opening a worktree

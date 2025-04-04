@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+# Get current theme
+THEME=$(get_selected_theme)
+#!/bin/bash
+
 # ========= XATA SETUP MODULE =========
 # Sets up Xata in a project
 

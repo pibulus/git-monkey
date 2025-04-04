@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Set directory paths for consistent imports
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+
 # ========= ESLINT & PRETTIER SETUP MODULE =========
 # Sets up ESLint and Prettier in a project
 
@@ -235,6 +239,8 @@ EOF
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
+# Get current theme
+THEME=$(get_selected_theme)
   }
 }
 EOF
