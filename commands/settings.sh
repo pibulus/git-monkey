@@ -1,110 +1,142 @@
-#!/bin/bash
+#\!/bin/bash
 
-# ========= GIT MONKEY SETTINGS MANAGER =========
+# Git Monkey Settings Menu
+# Allows configuring various aspects of Git Monkey
 
-source ./utils/style.sh
-source ./utils/config.sh
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PARENT_DIR="$(dirname "$DIR")"
+source "$PARENT_DIR/utils/config.sh"
+source "$PARENT_DIR/utils/style.sh"
+source "$PARENT_DIR/utils/ascii_art.sh"
 
-say_hi
-ascii_spell "Customize your monkey business"
+# Get current theme
+THEME=$(get_selected_theme)
 
-box "Git Monkey Settings"
-echo "Current Settings:"
-echo "  💫 Animations: $ENABLE_ANIMATIONS"
-echo "  🖼️ ASCII Art: $ENABLE_ASCII_ART"
-echo "  🌈 Colors: $ENABLE_COLORS"
-echo "  📢 Verbosity: $VERBOSITY_LEVEL"
+# Display the header
+clear
+display_menu_header
+
+echo "Git Monkey Settings"
 echo ""
 
-PS3=$'\nWhat would you like to change? '
-options=(
-  "Toggle animations" 
-  "Toggle ASCII art" 
-  "Toggle colors" 
-  "Change verbosity level" 
-  "Configure AI features"
-  "Reset to defaults"
-  "Return to menu"
-)
+# Main settings menu
+display_main_menu() {
+  local PS3="Choose a setting to configure: "
+  local options=(
+    "Theme (currently: $(get_selected_theme))"
+    "ASCII Art (currently: $(get_config "enable_ascii_art" "true"))"
+    "Animations (currently: $(get_config "enable_animations" "true"))"
+    "Colors (currently: $(get_config "enable_colors" "true"))"
+    "Verbosity (currently: $(get_config "verbosity_level" "normal"))"
+    "AI Settings"
+    "Back to main menu"
+  )
 
-select opt in "${options[@]}"; do
+  select opt in "${options[@]}"; do
     case $REPLY in
-        1)
-            if [ "$ENABLE_ANIMATIONS" = "true" ]; then
-                update_setting animations false
-                echo "🚫 Animations disabled"
-            else
-                update_setting animations true
-                echo "✅ Animations enabled"
-            fi
-            break
-            ;;
-        2)
-            if [ "$ENABLE_ASCII_ART" = "true" ]; then
-                update_setting ascii false
-                echo "🚫 ASCII art disabled"
-            else
-                update_setting ascii true
-                echo "✅ ASCII art enabled"
-            fi
-            break
-            ;;
-        3)
-            if [ "$ENABLE_COLORS" = "true" ]; then
-                update_setting colors false
-                echo "🚫 Colors disabled"
-            else
-                update_setting colors true
-                echo "✅ Colors enabled"
-            fi
-            break
-            ;;
-        4)
-            echo ""
-            echo "Select verbosity level:"
-            echo "1) Minimal - Just the essential information"
-            echo "2) Normal - Balanced output (default)"
-            echo "3) Verbose - Extra explanations and details"
-            read -p "Your choice (1/2/3): " verb_choice
-            
-            case "$verb_choice" in
-                1) update_setting verbosity minimal ;;
-                2) update_setting verbosity normal ;;
-                3) update_setting verbosity verbose ;;
-                *) echo "Invalid choice, keeping current setting" ;;
-            esac
-            echo "✅ Verbosity set to $VERBOSITY_LEVEL"
-            break
-            ;;
-        5)
-            # Launch AI settings menu
-            echo "Launching AI settings..."
-            source ./commands/settings_ai.sh
-            break
-            ;;
-        6)
-            # Reset to defaults
-            update_setting animations true
-            update_setting ascii true
-            update_setting colors true
-            update_setting verbosity normal
-            rainbow_box "✅ Settings reset to defaults"
-            break
-            ;;
-        7)
-            echo "Returning to menu..."
-            break
-            ;;
-        *)
-            echo "Please select a valid option" ;;
+      1)
+        # Theme settings - use the theme manager
+        "$PARENT_DIR/utils/theme_manager.sh"
+        break
+        ;;
+      2)
+        # ASCII Art settings
+        toggle_setting "enable_ascii_art"
+        display_success "$THEME"
+        break
+        ;;
+      3)
+        # Animation settings
+        toggle_setting "enable_animations"
+        display_success "$THEME"
+        break
+        ;;
+      4)
+        # Color settings
+        toggle_setting "enable_colors"
+        display_success "$THEME"
+        break
+        ;;
+      5)
+        # Verbosity settings
+        configure_verbosity
+        break
+        ;;
+      6)
+        # AI settings
+        if [ -f "$PARENT_DIR/commands/settings_ai.sh" ]; then
+          "$PARENT_DIR/commands/settings_ai.sh"
+        else
+          echo "$(display_error "$THEME") AI settings module not available."
+          sleep 2
+        fi
+        break
+        ;;
+      7)
+        # Return to main menu
+        echo "$(display_success "$THEME") Settings saved."
+        exit 0
+        ;;
+      *)
+        echo "$(display_error "$THEME") Invalid option"
+        ;;
     esac
-done
+  done
 
-# Print current settings after changes
-echo ""
-echo "Updated Settings:"
-echo "  💫 Animations: $ENABLE_ANIMATIONS"
-echo "  🖼️ ASCII Art: $ENABLE_ASCII_ART"
-echo "  🌈 Colors: $ENABLE_COLORS"
-echo "  📢 Verbosity: $VERBOSITY_LEVEL"
-echo ""
+  # Return to settings menu after action
+  display_main_menu
+}
+
+# Toggle a boolean setting
+toggle_setting() {
+  local setting="$1"
+  local current_value=$(get_config "$setting" "true")
+  
+  if [ "$current_value" = "true" ]; then
+    set_config "$setting" "false"
+    echo "$setting set to false"
+  else
+    set_config "$setting" "true"
+    echo "$setting set to true"
+  fi
+}
+
+# Configure verbosity level
+configure_verbosity() {
+  local PS3="Select verbosity level: "
+  local options=(
+    "Normal - Standard output"
+    "Verbose - Additional details"
+    "Debug - Maximum information"
+    "Back"
+  )
+
+  select opt in "${options[@]}"; do
+    case $REPLY in
+      1)
+        set_config "verbosity_level" "normal"
+        echo "Verbosity set to normal"
+        return
+        ;;
+      2)
+        set_config "verbosity_level" "verbose"
+        echo "Verbosity set to verbose"
+        return
+        ;;
+      3)
+        set_config "verbosity_level" "debug"
+        echo "Verbosity set to debug"
+        return
+        ;;
+      4)
+        return
+        ;;
+      *)
+        echo "$(display_error "$THEME") Invalid option"
+        ;;
+    esac
+  done
+}
+
+# Start the menu
+display_main_menu
